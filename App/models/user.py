@@ -30,14 +30,12 @@ class User(db.Model):
 class Ingredient (db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80), nullable = False, unique = True) 
-    amount = db.Column(db.Float, nullable = False)
     image = db.Column(db.String(120), nullable = True)
     recipes = db.relationship('RecipeIngredients', backref='ingredients', lazy=True)
 
     def __init__(self, name, amount, image):
         self.name = name 
-        self.amount = amount
-        self.image = image 
+        self.image = image
 
     
 class Recipe (db.Model):
@@ -60,3 +58,29 @@ class Recipe (db.Model):
         self.price_per_serving = price_per_serving
         self.cheap = cheap
         self.dish_type = dish_type
+
+class UserRecipes(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable = False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey(Recipe.id), nullable = False)
+
+    def __init__(self, user_id, recipe_id):
+        self.user_id = user_id
+        self.recipe_id = recipe_id
+
+class UserIngredients(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable = False)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey(Ingredient.id), nullable = False)
+    amount = db.Column(db.Float, nullable = False)
+
+    def __init__(self, user_id, ingredient_id, amount):
+        self.user_id = user_id
+        self.ingredient_id = ingredient_id
+        self.amount = amount
+
+class RecipeIngredients(db.Model):
+    recipe_id = db.Column(db.Integer, db.ForeignKey(Recipe.id), nullable = False)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey(Ingredient.id), nullable = False)
+
+    def __init__(self, recipe_id, ingredient_id):
+        self.recipe_id = recipe_id
+        self.ingredient_id = ingredient_id
