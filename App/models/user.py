@@ -60,6 +60,7 @@ class Recipe (db.Model):
         self.dish_type = dish_type
 
 class UserRecipes(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable = False)
     recipe_id = db.Column(db.Integer, db.ForeignKey(Recipe.id), nullable = False)
 
@@ -68,6 +69,7 @@ class UserRecipes(db.Model):
         self.recipe_id = recipe_id
 
 class UserIngredients(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable = False)
     ingredient_id = db.Column(db.Integer, db.ForeignKey(Ingredient.id), nullable = False)
     amount = db.Column(db.Float, nullable = False)
@@ -78,6 +80,7 @@ class UserIngredients(db.Model):
         self.amount = amount
 
 class RecipeIngredients(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
     recipe_id = db.Column(db.Integer, db.ForeignKey(Recipe.id), nullable = False)
     ingredient_id = db.Column(db.Integer, db.ForeignKey(Ingredient.id), nullable = False)
 
