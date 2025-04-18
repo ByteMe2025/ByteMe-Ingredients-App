@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
+from App.models.user import Ingredient
 
 
 from.index import index_views
@@ -81,7 +82,7 @@ def add_ingredient(id):
         flash('Ingredient not found')
         return redirect(url_for('auth_views.show_ingredients'))
     else: 
-        add_ingredient_to_user(current_user.id, id, amount['amount'])
+        current_user.add_ingredient_to_user(current_user.id, id, amount['amount'])
         flash('Ingredient added to user')
         return redirect(url_for('auth_views.show_ingredients'))
 

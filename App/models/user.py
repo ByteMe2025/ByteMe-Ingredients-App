@@ -27,7 +27,7 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
     def add_ingredient_to_user(self, ingredientID, amount):
-        userIngredient = UserIngredient(self.id, ingredientID, amount)
+        userIngredient = UserIngredients(self.id, ingredientID, amount)
         db.session.add(userIngredient)
         db.session.commit()
 
