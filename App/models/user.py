@@ -43,7 +43,7 @@ class Recipe (db.Model):
     title = db.Column(db.String(120), nullable = False, unique = True)
     image = db.Column(db.String(120), nullable = True)
     servings = db.Column(db.Integer, nullable = False)
-    ready_in_mins = db.Column(db.Integer, nullable = False)
+    ready_in_mins = db.Column(db.Integer, nullable = True)
     health_score = db.Column(db.Float, nullable = False)
     price_per_serving = db.Column(db.Float, nullable = False)
     cheap = db.Column(db.Boolean, nullable = False)
