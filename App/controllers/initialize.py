@@ -30,13 +30,15 @@ def api_call():
             )
             db.session.add(rec)
 
-            for ingredient in recipe['analyzedInstructions']['steps']['ingredients']:
-                ing = Ingredient(
-                    id = ingredient['id'],
-                    name = ingredient['name'],
-                    image = ingredient['image'],
-                )
-                db.session.add(ing)
+            for instruction in recipe.get('analyzedInstructions', []):
+                for step in instruction.get('steps', []):
+                    for ingredient in step.get('ingredients', []):
+                        ing = Ingredient(
+                            id = ingredient['id'],
+                            name = ingredient['name'],
+                            image = ingredient['image'],
+                        )  
+                        db.session.add(ing)
         db.session.commit()
         print_recipe()
         print_ingredient()
