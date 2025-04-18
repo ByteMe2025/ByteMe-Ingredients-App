@@ -2,7 +2,7 @@ from flask import jsonify
 from .user import create_user
 from sqlite3 import IntegrityError
 from App.database import db
-from App.models import Recipe
+from App.models import Recipe, Ingredient
 import requests
 
 def initialize():
@@ -29,8 +29,17 @@ def api_call():
                 dish_type = recipe['dishTypes'][0]
             )
             db.session.add(recipe)
+
+            for ingredient in recipe['analyzedInstructions']['steps']['ingredients']:
+                ing = Ingredient(
+                    id = ingredient['id'],
+                    name = ingredient['name'],
+                    image = ingredient['image'],
+                )
+                db.session.add(ing)
         db.session.commit()
         print_recipe()
+        print_ingredient()
     except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
 
@@ -44,4 +53,10 @@ def print_recipe():
         print(recipe.price_per_serving)
         print(recipe.cheap)
         print(recipe.dish_type)
+        print('-------------------')
+
+def print_ingredient():
+    for ingredient in Ingredient.query.all():
+        print(ingredient.name)
+        print(ingredient.image)
         print('-------------------')
