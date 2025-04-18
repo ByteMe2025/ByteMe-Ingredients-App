@@ -8,7 +8,7 @@ index_views = Blueprint('index_views', __name__, template_folder='../templates')
 @index_views.route('/', methods=['GET'])
 def init_route():
     initialize()
-    #return redirect(url_for('index_views.login_page'))
+    return redirect(url_for('index_views.login_page'))
 
 @index_views.route('/login', methods=['GET'])
 def login_page():
