@@ -12,11 +12,11 @@ def initialize():
     api_call()
 
 def api_call():
-    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=1'
+    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=10&instructionsRequired=true&addRecipeInformation=true'
     try:
         response = requests.get(url)
         data = response.json()
-        """ for recipe in data['results']:
+        for recipe in data['results']:
             recipe = Recipe(
                 id = recipe['id'],
                 title=recipe['title'],
@@ -30,12 +30,12 @@ def api_call():
             )
             db.session.add(recipe)
         db.session.commit()
-        print_recipe() """
+        print_recipe()
         return jsonify(data)
     except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
 
-""" def print_recipe():
+def print_recipe():
     for recipe in Recipe.query.all():
         print(recipe.title)
         print(recipe.image)
@@ -45,4 +45,4 @@ def api_call():
         print(recipe.price_per_serving)
         print(recipe.cheap)
         print(recipe.dish_type)
-        print('-------------------') """
+        print('-------------------')
