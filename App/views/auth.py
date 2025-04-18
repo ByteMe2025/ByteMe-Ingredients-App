@@ -85,7 +85,7 @@ def add_ingredient(id):
         flash('Ingredient added to user')
         return redirect(url_for('auth_views.show_ingredients'))
 
-@auth_views.route('/ingredients', methods=['POST'])
-def show_ingredients()
+@auth_views.route('/ingredients', methods=['GET'])
+def show_ingredients():
     ingredients = Ingredient.query.all()
     return render_template('ingredients.html', ingredients=ingredients)
