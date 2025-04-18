@@ -12,7 +12,7 @@ class AdminView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
         flash("Login to access admin")
-        return redirect(url_for('index_page', next=request.url))
+        return redirect(url_for('login_page', next=request.url))
 
 def setup_admin(app):
     admin = Admin(app, name='FlaskMVC', template_mode='bootstrap3')
