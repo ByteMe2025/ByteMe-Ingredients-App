@@ -71,3 +71,21 @@ def logout_api():
     response = jsonify(message="Logged Out!")
     unset_jwt_cookies(response)
     return response
+
+@auth_views.route('/addIngredient/<id>', methods=['POST'])
+@jwt_required()
+def add_ingredient(id):
+    amount = request.form
+    ingredient = Ingredient.query.get(id)
+    if not ingredient: 
+        flash('Ingredient not found')
+        return redirect(url_for('auth_views.show_ingredients'))
+    else: 
+        add_ingredient_to_user(current_user.id, id, amount['amount'])
+        flash('Ingredient added to user')
+        return redirect(url_for('auth_views.show_ingredients'))
+
+@auth_views.route('/ingredients', methods=['GET'])
+def show_ingredients():
+    ingredients = Ingredient.query.all()
+    return render_template('ingredients.html', ingredients=ingredients)
