@@ -33,12 +33,13 @@ def api_call():
             for instruction in recipe.get('analyzedInstructions', []):
                 for step in instruction.get('steps', []):
                     for ingredient in step.get('ingredients', []):
-                        ing = Ingredient(
-                            id = ingredient['id'],
-                            name = ingredient['name'],
-                            image = ingredient['image'],
-                        )  
-                        db.session.add(ing)
+                        if not Ingredient.query.filter_by(name=ingredient['name']).first():
+                            ing = Ingredient(
+                                name = ingredient['name'],
+                                image = ingredient['image'],
+                            )  
+                            db.session.add(ing)
+                            db.session.commit()
         db.session.commit()
         print_recipe()
         print_ingredient()

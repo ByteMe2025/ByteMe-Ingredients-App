@@ -33,8 +33,7 @@ class Ingredient (db.Model):
     image = db.Column(db.String(120), nullable = True)
     recipes = db.relationship('RecipeIngredients', backref='ingredients', lazy=True)
 
-    def __init__(self, id, name, image):
-        self.id = id
+    def __init__(self, name, image):
         self.name = name 
         self.image = image
 
