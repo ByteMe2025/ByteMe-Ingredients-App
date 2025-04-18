@@ -19,3 +19,7 @@ def init():
 @index_views.route('/health', methods=['GET'])
 def health_check():
     return jsonify({'status':'healthy'})
+
+@index_views.route('/api_call', methods=['GET'])
+def api_call():
+    get_recipes()
