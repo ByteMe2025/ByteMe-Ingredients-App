@@ -36,3 +36,5 @@ def api_call():
         return jsonify(data)
     except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
+
+
