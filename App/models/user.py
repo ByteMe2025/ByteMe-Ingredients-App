@@ -49,7 +49,8 @@ class Recipe (db.Model):
     cheap = db.Column(db.Boolean, nullable = False)
     dish_type = db.Column(db.String(80), nullable = False)
 
-    def __init__(self, title, image, servings, ready_in_mins, health_score, price_per_serving, cheap, dish_type):
+    def __init__(self, id, title, image, servings, ready_in_mins, health_score, price_per_serving, cheap, dish_type):
+        self.id = id
         self.title = title
         self.image = image
         self.servings = servings

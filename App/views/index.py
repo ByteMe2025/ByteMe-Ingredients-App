@@ -29,7 +29,7 @@ def health_check():
 
 @index_views.route('/api_call', methods=['GET'])
 def api_call():
-    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=1'
+    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=1&instructionsRequired=true&addRecipeInformation=true'
     try:
         response = requests.get(url)
         data = response.json()
