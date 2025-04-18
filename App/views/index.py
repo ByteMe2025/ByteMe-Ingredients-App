@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for, error
+from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for
 from App.controllers import create_user, initialize, get_recipes
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
@@ -33,4 +33,4 @@ def api_call():
         data = response.json()
         return jsonify(data)
     except request.exceptions.RequestException as e:
-        return jsonify({error: 'Failed to fetch recipes'}), 500
+        return jsonify('message: Failed to fetch recipes'), 500
