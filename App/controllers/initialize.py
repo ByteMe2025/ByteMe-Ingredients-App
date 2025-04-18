@@ -17,7 +17,7 @@ def api_call():
         response = requests.get(url)
         data = response.json()
         for recipe in data['results']:
-            recipe = Recipe(
+            rec = Recipe(
                 id = recipe['id'],
                 title=recipe['title'],
                 image=recipe['image'],
@@ -28,7 +28,7 @@ def api_call():
                 cheap =recipe['cheap'],
                 dish_type = recipe['dishTypes'][0]
             )
-            db.session.add(recipe)
+            db.session.add(rec)
 
             for ingredient in recipe['analyzedInstructions']['steps']['ingredients']:
                 ing = Ingredient(
