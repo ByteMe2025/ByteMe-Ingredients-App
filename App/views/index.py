@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for
+from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for, error
 from App.controllers import create_user, initialize, get_recipes
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
@@ -27,4 +27,10 @@ def health_check():
 
 @index_views.route('/api_call', methods=['GET'])
 def api_call():
-    get_recipes()
+    url = 'https://api.spoonacular.com/recipes/complexSearch?number=5'
+    try:
+        response = request.get(url)
+        data = response.json()
+        return jsonify(data)
+    except request.exceptions.RequestException as e:
+        return jsonify({error: 'Failed to fetch recipes'}), 500
