@@ -43,18 +43,18 @@ class Recipe (db.Model):
     title = db.Column(db.String(120), nullable = False, unique = True)
     image = db.Column(db.String(120), nullable = True)
     servings = db.Column(db.Integer, nullable = False)
-    ready_in_mins = db.Column(db.Integer, nullable = True)
+    #ready_in_mins = db.Column(db.Integer, nullable = False)
     health_score = db.Column(db.Float, nullable = False)
     price_per_serving = db.Column(db.Float, nullable = False)
     cheap = db.Column(db.Boolean, nullable = False)
     dish_type = db.Column(db.String(80), nullable = False)
 
-    def __init__(self, id, title, image, servings, ready_in_mins, health_score, price_per_serving, cheap, dish_type):
+    def __init__(self, id, title, image, servings, health_score, price_per_serving, cheap, dish_type):
         self.id = id
         self.title = title
         self.image = image
         self.servings = servings
-        self.ready_in_mins = ready_in_mins
+        #self.ready_in_mins = ready_in_mins
         self.health_score = health_score
         self.price_per_serving = price_per_serving
         self.cheap = cheap
