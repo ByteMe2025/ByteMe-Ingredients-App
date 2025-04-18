@@ -21,7 +21,7 @@ def api_call():
                 id = recipe['id'],
                 title=recipe['title'],
                 image=recipe['image'],
-                ready_in_mins=recipe['readyInMinutes'],
+                #ready_in_mins=recipe['readyInMinutes'],
                 servings=recipe['servings'],
                 health_score=recipe['healthScore'],
                 price_per_serving=recipe['pricePerServing'],
@@ -38,7 +38,7 @@ def print_recipe():
     for recipe in Recipe.query.all():
         print(recipe.title)
         print(recipe.image)
-        print(recipe.ready_in_mins)
+        #print(recipe.ready_in_mins)
         print(recipe.servings)
         print(recipe.health_score)
         print(recipe.price_per_serving)
