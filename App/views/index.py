@@ -1,6 +1,7 @@
 from sqlite3 import IntegrityError
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for
 from App.controllers import create_user, initialize
+import requests
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 
@@ -28,9 +29,9 @@ def health_check():
 
 @index_views.route('/api_call', methods=['GET'])
 def api_call():
-    url = 'https://api.spoonacular.com/recipes/complexSearch?number=5'
+    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=1'
     try:
-        response = request.get(url)
+        response = requests.get(url)
         data = response.json()
         return jsonify(data)
     except IntegrityError:
