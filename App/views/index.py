@@ -1,3 +1,4 @@
+from sqlite3 import IntegrityError
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for
 from App.controllers import create_user, initialize
 
@@ -32,5 +33,5 @@ def api_call():
         response = request.get(url)
         data = response.json()
         return jsonify(data)
-    except request.exceptions.RequestException as e:
+    except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
