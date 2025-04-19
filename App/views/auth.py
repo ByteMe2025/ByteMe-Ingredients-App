@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
-from App.models.user import Ingredient
+from App.models.user import Ingredient, UserIngredients
 
 
 from.index import index_views
@@ -89,4 +89,5 @@ def add_ingredient(id):
 @auth_views.route('/ingredients', methods=['GET'])
 def show_ingredients():
     ingredients = Ingredient.query.all()
-    return render_template('ingredients.html', ingredients=ingredients)
+    user_ingredients = UserIngredients.query.filter_by(user_id=current_user.id).all()
+    return render_template('ingredients.html', ingredients=ingredients, user_ingredients=user_ingredients)
