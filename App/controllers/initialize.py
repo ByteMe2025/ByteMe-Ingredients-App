@@ -41,8 +41,6 @@ def api_call():
                             db.session.add(ing)
                             db.session.commit()
         db.session.commit()
-        print_recipe()
-        print_ingredient()
     except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
 
