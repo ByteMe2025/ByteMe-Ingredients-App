@@ -31,6 +31,23 @@ class User(db.Model):
         db.session.add(userIngredient)
         db.session.commit()
 
+    def add_fav_recipe_to_user(self, recipeID):
+        userRecipe = UserRecipes(self.id, recipeID)
+        db.session.add(userRecipe)
+        db.session.commit()
+    
+    def remove_ingredient_from_user(self, ingredientID):
+        userIngredient = UserIngredients.query.filter_by(user_id=self.id, ingredient_id=ingredientID).first()
+        if userIngredient:
+            db.session.delete(userIngredient)
+            db.session.commit()
+
+    def remove_fav_recipe_from_user(self, recipeID):
+        userRecipe = UserRecipes.query.filter_by(user_id=self.id, recipe_id=recipeID).first()
+        if userRecipe:
+            db.session.delete(userRecipe)
+            db.session.commit()
+
 class Ingredient (db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80), nullable = False, unique = True) 
