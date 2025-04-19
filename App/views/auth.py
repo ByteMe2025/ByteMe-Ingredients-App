@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
-from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity
+from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity, jwt_manager
 from App.models.user import Ingredient, UserIngredients, User
-
 
 from.index import index_views
 
@@ -74,7 +73,7 @@ def logout_api():
     return response
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
-@jwt_required()
+#@jwt_required()
 def add_ingredient(id):
     amount = request.form
     ingredient = Ingredient.query.get(id)
@@ -87,7 +86,7 @@ def add_ingredient(id):
         return redirect(url_for('auth_views.show_ingredients'))
 
 @auth_views.route('/ingredients', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def show_ingredients():
     ingredients = Ingredient.query.all()
     user_ingredients = UserIngredients.query.all()
