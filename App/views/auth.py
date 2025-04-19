@@ -89,5 +89,4 @@ def add_ingredient(id):
 #@jwt_required()
 def show_ingredients():
     ingredients = Ingredient.query.all()
-    user_ingredients = UserIngredients.query.all()
-    return render_template('ingredients.html', ingredients=ingredients, user_ingredients=user_ingredients)
+    return render_template('ingredients.html', ingredients=ingredients)
