@@ -89,5 +89,5 @@ def add_ingredient(id):
 @auth_views.route('/ingredients', methods=['GET'])
 def show_ingredients():
     ingredients = Ingredient.query.all()
-    user_ingredients = UserIngredients.query.filter_by(user_id=current_user.id).all()
+    user_ingredients = UserIngredients.query.filter_by(current_user).all()
     return render_template('ingredients.html', ingredients=ingredients, user_ingredients=user_ingredients)
