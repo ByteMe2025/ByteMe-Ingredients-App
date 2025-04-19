@@ -13,7 +13,7 @@
 
   </head>
   <body>
-    {% for ingredient in ingredients%}
+    {% for ingredient in ingredients %}
         <div class="container" style="margin-top: 10%;"> 
             <div class="row">
                 <div class="col s12 m10 offset-m1">
@@ -22,6 +22,17 @@
                         <input type="text" name="ingredient_amount">
                         <button type="submit" class="btn waves-effect waves-light">Add to my ingredients</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for ing in user_ingredients %}
+        <div class="container" style="margin-top: 10%;"> 
+            <div class="row">
+                <div class="col s12 m10 offset-m1">
+                    <img src="https://img.spoonacular.com/ingredients_100x100/{{ing.image}}">
+                    <p>{{ing.name}}</p>
+                    <p>{{ing.amount}}</p>
                 </div>
             </div>
         </div>
