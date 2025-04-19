@@ -74,7 +74,7 @@ def logout_api():
     return response
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def add_ingredient(id):
     amount = request.form
     ingredient = Ingredient.query.get(id)
@@ -87,7 +87,7 @@ def add_ingredient(id):
         return redirect(url_for('auth_views.show_ingredients'))
 
 @auth_views.route('/ingredients', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def show_ingredients():
     ingredients = Ingredient.query.all()
     user = User.query.filter_by(username=get_jwt_identity()).first()
