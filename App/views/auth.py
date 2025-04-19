@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
-from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
-from App.models.user import Ingredient, UserIngredients
+from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity
+from App.models.user import Ingredient, UserIngredients, User
 
 
 from.index import index_views
@@ -87,7 +87,9 @@ def add_ingredient(id):
         return redirect(url_for('auth_views.show_ingredients'))
 
 @auth_views.route('/ingredients', methods=['GET'])
+@jwt_required()
 def show_ingredients():
     ingredients = Ingredient.query.all()
-    #user_ingredients = UserIngredients.query.filter_by(current_user).all()
-    return render_template('ingredients.html', ingredients=ingredients)
+    user = User.query.filter_by(username=get_jwt_identity()).first()
+    user_ingredients = UserIngredients.query.filter_by(user_id=user.id).all()
+    return render_template('ingredients.html', ingredients=ingredients, user_ingredients=user_ingredients)
