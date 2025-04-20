@@ -38,10 +38,10 @@ def api_call():
                                 name = ingredient['name'],
                                 image = ingredient['image'],
                             )
-                            rec_ing = RecipeIngredients(recipe_id=rec.id, ingredient_id=ing.id)
-                            db.session.add(rec_ing)  
                             db.session.add(ing)
                             db.session.commit()
+                            rec_ing = RecipeIngredients(recipe_id=rec.id, ingredient_id=ing.id)
+                            db.session.add(rec_ing)
         db.session.commit()
     except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
