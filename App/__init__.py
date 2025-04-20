@@ -4,6 +4,12 @@ from .controllers import *
 from .main import *
 
 
+@index_views.route('/home', methods=['GET'])
+def home_page():
+    user_recipes = UserRecipes.query.all()
+    user_ingredients = UserIngredients.query.all()
+    return render_template('index.html', user_recipes=user_recipes, user_ingredients=user_ingredients)
+
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
 def add_ingredient(id):
@@ -18,7 +24,7 @@ def add_ingredient(id):
         return redirect(url_for('auth_views.show_ingredients'))
 
 @auth_views.route('/ingredients', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def show_ingredients():
     ingredients = Ingredient.query.all()
     return render_template('ingredients.html', ingredients=ingredients)

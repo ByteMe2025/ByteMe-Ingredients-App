@@ -9,8 +9,19 @@ class Ingredient (db.Model):
     def __init__(self, name, image):
         self.name = name 
         self.image = image
+        
+    def remove_ingredient_from_user(self, ingredientID):
+        userIngredient = UserIngredients.query.filter_by(user_id=self.id, ingredient_id=ingredientID).first()
+        if userIngredient:
+            db.session.delete(userIngredient)
+            db.session.commit()
 
-    
+
+    def add_ingredient_to_user(self, ingredientID, amount):
+        userIngredient = UserIngredients(self.id, ingredientID, amount)
+        db.session.add(userIngredient)
+        db.session.commit()
+
 class Recipe (db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(120), nullable = False, unique = True)
@@ -32,6 +43,19 @@ class Recipe (db.Model):
         self.price_per_serving = price_per_serving
         self.cheap = cheap
         self.dish_type = dish_type
+
+      
+    def add_fav_recipe_to_user(self, recipeID):
+        userRecipe = UserRecipes(self.id, recipeID)
+        db.session.add(userRecipe)
+        db.session.commit()
+
+
+    def remove_fav_recipe_from_user(self, recipeID):
+        userRecipe = UserRecipes.query.filter_by(user_id=self.id, recipe_id=recipeID).first()
+        if userRecipe:
+            db.session.delete(userRecipe)
+            db.session.commit()
 
 class UserRecipes(db.Model):
     id = db.Column(db.Integer, primary_key = True)

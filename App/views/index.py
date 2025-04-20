@@ -15,11 +15,7 @@ def init_route():
 def login_page():
     return render_template('login.html')
 
-@index_views.route('/home', methods=['GET'])
-def home_page():
-    user_recipes = UserRecipes.query.all()
-    user_ingredients = UserIngredients.query.all()
-    return render_template('index.html', user_recipes=user_recipes, user_ingredients=user_ingredients)
+
 
 @index_views.route('/init', methods=['GET'])
 def init():
