@@ -19,7 +19,7 @@
                 <div class="col s12 m10 offset-m1">
                     <img src="https://img.spoonacular.com/ingredients_100x100/{{ingredient.image}}">
                     <form action="/addIngredient/{{ingredient.id}}" method="POST">
-                        <input type="text" name="ingredient_amount">
+                        <input type="text" name="amount" required>
                         <button type="submit" class="btn waves-effect waves-light">Add to my ingredients</button>
                     </form>
                 </div>
