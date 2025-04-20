@@ -8,9 +8,8 @@ import os
 @index_views.route('/home', methods=['GET'])
 def home_page():
     user_recipes = UserRecipes.query.all()
-    user_ingredients = UserIngredients.query.all()
     recipes = Recipe.query.all()
-    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, user_ingredients=user_ingredients)
+    return render_template('index.html', recipes=recipes, user_recipes=user_recipes)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
@@ -28,8 +27,9 @@ def add_ingredient(id):
 @auth_views.route('/ingredients', methods=['GET'])
 @jwt_required()
 def show_ingredients():
+    user_ingredients = UserIngredients.query.all()
     ingredients = Ingredient.query.all()
-    return render_template('ingredients.html', ingredients=ingredients)
+    return render_template('ingredients.html', ingredients=ingredients, user_ingredients=user_ingredients)
 
 @auth_views.route('/addFavrecipe/<id>', methods=['POST'])
 def add_fav_recipe(id):
