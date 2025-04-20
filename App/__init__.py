@@ -107,7 +107,7 @@ def remove_fav_recipe(id):
 
 @index_views.route('/api_call', methods=['GET'])
 def api_call():
-    url = f'https://api.spoonacular.com/recipes/{recipeID}/analyzedInstructions?apiKey=dcd0266fa29a472f9bc5245206a24923'
+    url = 'https://api.spoonacular.com/recipes/324694/analyzedInstructions?apiKey=dcd0266fa29a472f9bc5245206a24923'
     try:
         response = requests.get(url)
         data = response.json()
