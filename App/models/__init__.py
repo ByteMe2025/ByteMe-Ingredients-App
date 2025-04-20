@@ -11,8 +11,8 @@ class Ingredient (db.Model):
         self.name = name 
         self.image = image
 
-    def add_ingredient_to_user(self, ingredientID, amount):
-        userIngredient = UserIngredients(self.id, ingredientID, amount)
+    def add_ingredient_to_user(self, userID, amount):
+        userIngredient = UserIngredients(self.id, userID, amount)
         db.session.add(userIngredient)
         db.session.commit()
 
