@@ -31,6 +31,18 @@
                     <form action="/removeFavrecipe/{{user_recipe.id}}" method="POST">
                         <button type="submit" class="btn waves-effect waves-light">Unfavourite Recipe</button>
                     </form>
+                    <p>Owned Ingredients:</p>
+                    <ul>
+                        {% for ing in ings_per_rec[user_recipe.recipe_id]['owned'] %}
+                            <li style="color: greenyellow;">{{ing}}</li>
+                        {% endfor %}
+                    </ul>
+                    <p>Missing Ingredients:</p>
+                    <ul>
+                        {% for ing in ings_per_rec[user_recipe.recipe_id]['missing'] %}
+                            <li style="color: red;">{{ing}}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

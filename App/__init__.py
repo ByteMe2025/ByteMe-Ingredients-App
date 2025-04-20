@@ -4,10 +4,33 @@ from .controllers import *
 from .main import *
 import os
 
+def display_recipe_ingredients(recipeID):
+    owned_ings = []
+    missing_ings = []
+    recipe_ingredients = RecipeIngredients.query.filter_by(recipe_id=recipeID).all()
+
+    for recipe_ingredient in recipe_ingredients:
+        user_ingredient = UserIngredients.query.filter_by(user_id=current_user.id, ingredient_id=recipe_ingredient.ingredient_id).first()
+        if user_ingredient:
+            owned_ings.append(user_ingredient.ingredient.name)
+        else:
+            missing_ings.append(recipe_ingredient.ingredient.name)
+    return owned_ings, missing_ings
+
+
 def show_recipe_instructions(recipeID):
     recipe = Recipe.query.get(recipeID)
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
+
+    ings_per_rec = {}
+    for user_recipe in user_recipes:
+        owned, missing = display_recipe_ingredients(user_recipe.recipe_id)
+        ings_per_rec[user_recipe.recipe_id] = {
+            'owned': owned,
+            'missing': missing
+        }
+
     if not recipe:
         flash('Recipe not found')
         return redirect(url_for('index_views.home_page'))
@@ -19,7 +42,7 @@ def show_recipe_instructions(recipeID):
             instructions = []
             for step in data[0]['steps']:
                 instructions.append(step['step'])
-            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, expanded=True, recipe=recipe)
+            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, expanded=True, recipe=recipe, ings_per_rec=ings_per_rec)
         except IntegrityError:
             flash('Failed to fetch recipe instructions')
             return redirect(url_for('index_views.home_page'))
@@ -49,7 +72,16 @@ def register_page():
 def home_page():
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
-    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, expanded=False)
+
+    ings_per_rec = {}
+    for user_recipe in user_recipes:
+        owned, missing = display_recipe_ingredients(user_recipe.recipe_id)
+        ings_per_rec[user_recipe.recipe_id] = {
+            'owned': owned,
+            'missing': missing
+        }
+
+    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, expanded=False, ings_per_rec=ings_per_rec)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
@@ -104,7 +136,7 @@ def remove_fav_recipe(id):
         flash('Recipe removed from user')
         return redirect(url_for('index_views.home_page'))
 
-@index_views.route('/api_call', methods=['GET'])
+""" @index_views.route('/api_call', methods=['GET'])
 def api_call():
     url = 'https://api.spoonacular.com/recipes/324694/analyzedInstructions?apiKey=dcd0266fa29a472f9bc5245206a24923'
     try:
@@ -112,4 +144,4 @@ def api_call():
         data = response.json()
         return jsonify(data)
     except IntegrityError:
-        return jsonify('message: Failed to fetch recipes'), 500
+        return jsonify('message: Failed to fetch recipes'), 500 """
