@@ -4,7 +4,8 @@ class Ingredient (db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80), nullable = False, unique = True) 
     image = db.Column(db.String(120), nullable = True)
-    recipes = db.relationship('RecipeIngredients', backref='ingredients', lazy=True)
+    recipes = db.relationship('RecipeIngredients', backref='ingredient', lazy=True)
+    users = db.relationship('UserIngredients', backref='ingredient', lazy=True)
 
     def __init__(self, name, image):
         self.name = name 
@@ -32,6 +33,8 @@ class Recipe (db.Model):
     price_per_serving = db.Column(db.Float, nullable = False)
     cheap = db.Column(db.Boolean, nullable = False)
     dish_type = db.Column(db.String(80), nullable = False)
+    ingredients = db.relationship('RecipeIngredients', backref='recipe', lazy=True)
+    users = db.relationship('UserRecipes', backref='recipe', lazy=True)
 
     def __init__(self, id, title, image, servings, ready_in_mins, health_score, price_per_serving, cheap, dish_type):
         self.id = id
