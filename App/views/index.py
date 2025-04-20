@@ -1,6 +1,7 @@
 from sqlite3 import IntegrityError
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for
 from App.controllers import create_user, initialize
+from App.models.user import Ingredient, UserIngredients, User, Recipe, UserRecipes
 import requests
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
@@ -16,7 +17,9 @@ def login_page():
 
 @index_views.route('/home', methods=['GET'])
 def home_page():
-    return render_template('index.html')
+    user_recipes = UserRecipes.query.all()
+    user_ingredients = UserIngredients.query.all()
+    return render_template('index.html', user_recipes=user_recipes, user_ingredients=user_ingredients)
 
 @index_views.route('/init', methods=['GET'])
 def init():
