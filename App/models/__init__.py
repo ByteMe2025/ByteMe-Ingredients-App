@@ -12,7 +12,7 @@ class Ingredient (db.Model):
         self.image = image
 
     def add_ingredient_to_user(self, userID, amount):
-        userIngredient = UserIngredients(self.id, userID, amount)
+        userIngredient = UserIngredients(userID, self.id, amount)
         db.session.add(userIngredient)
         db.session.commit()
 
