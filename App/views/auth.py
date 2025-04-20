@@ -1,5 +1,6 @@
 from flask import Blueprint, app, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity, JWTManager
+import jwt
 
 
 from.index import index_views
@@ -38,6 +39,8 @@ def login_action():
         flash('Login Successful')
         response = redirect(url_for('index_views.home_page'))
         print("token", token)
+        decoded = jwt.decode(token, options={"verify_signature": False})
+        print(decoded)
         set_access_cookies(response, token) 
     return response
 
