@@ -5,9 +5,62 @@
 {{ super() }}
 
 {% block content %}
-    <h1>Flask MVC</h1>
-    {% if is_authenticated %}
-        <p> Welcome {{current_user.username}} </p>
+    <a href="/ingredients" class="btn waves-effect waves-light" type="button">Add Ingredients</a>
+
+    <h1>Browse Recipes</h1>
+    {% for recipe in recipes %}
+        <div class="container" style="margin-top: 10%;"> 
+            <div class="row">
+                <div class="col s12 m10 offset-m1">
+                    <img src="{{recipe.image}}">
+                    <p>{{recipe.title}}</p>
+                    <a href="/updatedHome/{{recipe.id}}">Click Here to Show Recipe Instructions and Favourite</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <h1>Saved Recipes</h1>
+    {% for user_recipe in user_recipes %}
+        <div class="container" style="margin-top: 10%;"> 
+            <div class="row">
+                <div class="col s12 m10 offset-m1">
+                    <img src="{{user_recipe.recipe.image}}" style="width: 80px; height: 80px;">
+                    <p>{{user_recipe.recipe.title}}</p>
+                    <a href="/updatedHome/{{user_recipe.recipe_id}}">Click Here to Show Recipe Instructions</a>
+                    <form action="/removeFavrecipe/{{user_recipe.id}}" method="POST">
+                        <button type="submit" class="btn waves-effect waves-light">Unfavourite Recipe</button>
+                    </form>
+                    <p>Owned Ingredients:</p>
+                    <ul>
+                        {% for ing in ings_per_rec[user_recipe.recipe_id]['owned'] %}
+                            <li style="color: green;">{{ing}}</li>
+                        {% endfor %}
+                    </ul>
+                    <p>Missing Ingredients:</p>
+                    <ul>
+                        {% for ing in ings_per_rec[user_recipe.recipe_id]['missing'] %}
+                            <li style="color: red;">{{ing}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if expanded %}
+        <h1>Recipe Instructions</h1>
+        {% for instruction in instructions %}
+            <div class="container" style="margin-top: 10%;"> 
+                <div class="row">
+                    <div class="col s12 m10 offset-m1">
+                        <p>{{loop.index}}. {{instruction}}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <form action="/addFavrecipe/{{recipe.id}}" method="POST">
+            <button type="submit" class="btn waves-effect waves-light">Favourite Recipe</button>
+        </form>
     {% endif %}
-    <p>This is a boileplate flask application which follows the MVC pattern for structuring the project.</p>
 {% endblock %}

@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+  
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}{% endblock %}</title>
+
+  </head>
+  <body>
+
+    <nav class="purple">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo center">{% block page %}{% endblock %}</a>
+            <ul id="nav-mobile" class="left">
+                <li><a href="/home">Home</a></li>
+            </ul>
+            {% if is_authenticated %}
+            <ul id="nav-mobile" class="right">
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+            {% else %}
+            <form class="right navbar-form" method="POST" action="/login" style="display: flex; flex-wrap: nowrap; align-items: center; margin-right: 10px;">
+                <div class="input-field" style="margin-right: 10px;">
+                    <input placeholder="username" value="bob" name="username" type="text" class="validate" required>
+                    <label for="username">username</label>
+                </div>
+                <div class="input-field" style="margin-right: 10px;">
+                    <input placeholder="password"value="bobpass" name="password" type="password" class="validate" required>
+                    <label for="password">Password</label>
+                </div>
+                <button type="submit" class="btn waves-effect waves-light">Login</button>
+            </form>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% for ingredient in ingredients %}
+        <div class="container" style="margin-top: 10%;"> 
+            <div class="row">
+                <div class="col s12 m10 offset-m1">
+                    <img src="https://img.spoonacular.com/ingredients_100x100/{{ingredient.image}}">
+                    <form action="/addIngredient/{{ingredient.id}}" method="POST">
+                        <input type="text" name="amount" placeholder="amount" required>
+                        <p>{{ingredient.name}}</p>
+                        <button type="submit" class="btn waves-effect waves-light">Add to my ingredients</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <h1>My Ingredients</h1>
+
+    {% for user_ingredient in user_ingredients %}
+    <div class="container" style="margin-top: 10%;"> 
+        <div class="row">
+            <div class="col s12 m10 offset-m1">
+                <img src="https://img.spoonacular.com/ingredients_100x100/{{user_ingredient.ingredient.image}}">
+                <p>{{user_ingredient.ingredient.name}}</p>
+                <p>Amount: {{user_ingredient.amount | int }}</p>
+                <form action="/removeIngredient/{{user_ingredient.id}}" method="POST">
+                    <button type="submit" class="btn waves-effect waves-light">Remove Ingredient</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor%}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+       M.AutoInit();
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+              M.toast({html: '{{message}}'})
+              {% endfor %}
+          {% endif %}
+        {% endwith %}
+       
+    </script>
+    
+  </body>
+</html>
