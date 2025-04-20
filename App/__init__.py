@@ -9,7 +9,8 @@ import os
 def home_page():
     user_recipes = UserRecipes.query.all()
     user_ingredients = UserIngredients.query.all()
-    return render_template('index.html', user_recipes=user_recipes, user_ingredients=user_ingredients)
+    recipes = Recipe.query.all()
+    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, user_ingredients=user_ingredients)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
