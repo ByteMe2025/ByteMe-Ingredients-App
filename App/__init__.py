@@ -49,12 +49,12 @@ def show_recipes():
 
 @auth_views.route('/removeIngredient/<id>', methods=['POST'])
 def remove_ingredient(id):
-    ingredient = Ingredient.query.get(id)
-    if not ingredient: 
+    user_ingredient = UserIngredients.query.get(id)
+    if not user_ingredient: 
         flash('Ingredient not found')
         return redirect(url_for('auth_views.show_ingredients'))
     else:
-        current_user.remove_ingredient_from_user(current_user.id, id)
+        user_ingredient.remove_ingredient_from_user(current_user.id)
         flash('Ingredient removed from user')
         return redirect(url_for('auth_views.show_ingredients'))
 

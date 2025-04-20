@@ -53,7 +53,7 @@
             </div>
         </div>
     {% endfor %}
-    
+
     <h1>My Ingredients</h1>
 
     {% for user_ingredient in user_ingredients %}
@@ -63,7 +63,7 @@
                 <img src="https://img.spoonacular.com/ingredients_100x100/{{user_ingredient.ingredient.image}}">
                 <p>{{user_ingredient.ingredient.name}}</p>
                 <p>{{user_ingredient.amount}}</p>
-                <a href="/deleteIngredient/{{user_ingredient.id}}" class="btn waves-effect waves-light" type="button">Remove Ingredient</a>
+                <a href="/removeIngredient/{{user_ingredient.id}}" class="btn waves-effect waves-light" type="button">Remove Ingredient</a>
             </div>
         </div>
     </div>

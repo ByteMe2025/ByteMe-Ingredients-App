@@ -10,13 +10,6 @@ class Ingredient (db.Model):
     def __init__(self, name, image):
         self.name = name 
         self.image = image
-        
-    def remove_ingredient_from_user(self, ingredientID):
-        userIngredient = UserIngredients.query.filter_by(user_id=self.id, ingredient_id=ingredientID).first()
-        if userIngredient:
-            db.session.delete(userIngredient)
-            db.session.commit()
-
 
     def add_ingredient_to_user(self, ingredientID, amount):
         userIngredient = UserIngredients(self.id, ingredientID, amount)
@@ -79,6 +72,12 @@ class UserIngredients(db.Model):
         self.user_id = user_id
         self.ingredient_id = ingredient_id
         self.amount = amount
+
+    def remove_ingredient_from_user(self, user_id):
+        userIngredient = UserIngredients.query.filter_by(id=self.id, user_id=user_id).first()
+        if userIngredient:
+            db.session.delete(userIngredient)
+            db.session.commit()
 
 class RecipeIngredients(db.Model):
     id = db.Column(db.Integer, primary_key = True)
