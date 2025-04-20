@@ -87,8 +87,11 @@ def home_page():
 def add_ingredient(id):
     amount = request.form
     ingredient = Ingredient.query.get(id)
-    if not ingredient: 
-        flash('Ingredient not found')
+    user_ingredient = UserIngredients.query.filter_by(user_id=current_user.id, ingredient_id=id).first()
+    if user_ingredient: 
+        flash('Ingredient already owned')
+        user_ingredient.update_amount(float(amount['amount']))
+        flash('Ingredient amount updated')
         return redirect(url_for('auth_views.show_ingredients'))
     else: 
         ingredient.add_ingredient_to_user(current_user.id, amount['amount'])

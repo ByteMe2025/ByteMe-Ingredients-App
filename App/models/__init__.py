@@ -78,6 +78,10 @@ class UserIngredients(db.Model):
             db.session.delete(userIngredient)
             db.session.commit()
 
+    def update_amount(self, new_amount):
+        self.amount = new_amount
+        db.session.commit()
+
 class RecipeIngredients(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     recipe_id = db.Column(db.Integer, db.ForeignKey(Recipe.id), nullable = False)
