@@ -19,7 +19,7 @@ def add_ingredient(id):
         flash('Ingredient not found')
         return redirect(url_for('auth_views.show_ingredients'))
     else: 
-        current_user.add_ingredient_to_user(current_user.id, id, amount['amount'])
+        ingredient.add_ingredient_to_user(current_user.id, id, amount['amount'])
         flash('Ingredient added to user')
         return redirect(url_for('auth_views.show_ingredients'))
 
