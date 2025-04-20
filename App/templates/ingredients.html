@@ -47,6 +47,7 @@
                     <img src="https://img.spoonacular.com/ingredients_100x100/{{ingredient.image}}">
                     <form action="/addIngredient/{{ingredient.id}}" method="POST">
                         <input type="text" name="amount" placeholder="amount" required>
+                        <p>{{ingredient.name}}</p>
                         <button type="submit" class="btn waves-effect waves-light">Add to my ingredients</button>
                     </form>
                 </div>
@@ -65,7 +66,7 @@
                 <p>Amount: {{user_ingredient.amount | int }}</p>
                 <form action="/removeIngredient/{{user_ingredient.id}}" method="POST">
                     <button type="submit" class="btn waves-effect waves-light">Remove Ingredient</button>
-                </form>>
+                </form>
             </div>
         </div>
     </div>
