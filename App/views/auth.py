@@ -1,5 +1,7 @@
 from flask import Blueprint, app, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
-from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity, JWTManager
+from flask_jwt_extended import create_access_token, jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity, JWTManager
+
+from App.models.user import User
 
 
 from.index import index_views
@@ -30,15 +32,20 @@ def identify_page():
 @auth_views.route('/login', methods=['POST'])
 def login_action():
     data = request.form
-    token = login(str(data['username']), str(data['password']))
-    if not token:
+    user = User.query.filter_by(username=data['username']).first()
+    if user and user.check_password(data['password']):
+        token = create_access_token(identity=data['username'])
+        if token:
+            flash('Login Successful')
+            response = redirect(url_for('index_views.home_page'))
+            print("token", token)
+            set_access_cookies(response, token) 
+        else:
+            flash('Login Failed')
+            response = redirect(url_for('index_views.login_page'))
+    else:
         flash('Bad username or password given'), 401
         response = redirect(url_for('index_views.login_page'))
-    else:
-        flash('Login Successful')
-        response = redirect(url_for('index_views.home_page'))
-        print("token", token)
-        set_access_cookies(response, token) 
     return response
 
 @auth_views.route('/logout', methods=['GET'])
