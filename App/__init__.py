@@ -61,7 +61,6 @@ def register_user():
         flash('User created successfully')
         return redirect(url_for('index_views.login_page'))
     else:
-        flash('User already exists')
         return redirect(url_for('index_views.register_page'))
     
 @index_views.route('/register', methods=['GET'])
@@ -106,8 +105,9 @@ def show_ingredients():
 @auth_views.route('/addFavrecipe/<id>', methods=['POST'])
 def add_fav_recipe(id):
     recipe = Recipe.query.get(id)
-    if not recipe: 
-        flash('Recipe not found')
+    user_recipe = UserRecipes.query.filter_by(recipe_id=id).first()
+    if user_recipe: 
+        flash('Recipe already favorited')
         return redirect(url_for('index_views.home_page'))
     else: 
         recipe.add_fav_recipe_to_user(current_user.id)
