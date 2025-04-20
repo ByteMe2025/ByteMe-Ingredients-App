@@ -25,7 +25,7 @@ def show_recipe_instructions(recipeID):
             return redirect(url_for('index_views.home_page'))
 
 
-@index_views.route('/updatedHome<id>', methods=['GET'])
+@index_views.route('/updatedHome/<id>', methods=['GET'])
 def updatedHome_page(id):
     show_recipe_instructions(id)
     
