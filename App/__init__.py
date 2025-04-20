@@ -27,7 +27,7 @@ def show_recipe_instructions(recipeID):
 
 @index_views.route('/updatedHome/<id>', methods=['GET'])
 def updatedHome_page(id):
-    show_recipe_instructions(id)
+    return show_recipe_instructions(id)
     
 
 @index_views.route('/signup', methods=['POST'])
