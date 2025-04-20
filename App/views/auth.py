@@ -42,6 +42,7 @@ def login_action():
     return response
 
 @auth_views.route('/logout', methods=['GET'])
+@jwt_required()
 def logout_action():
     response = redirect(url_for('index_views.login_page')) 
     flash("Logged Out!")
