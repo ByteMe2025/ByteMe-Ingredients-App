@@ -73,7 +73,7 @@ def logout_api():
     return response
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def add_ingredient(id):
     amount = request.form
     ingredient = Ingredient.query.get(id)
