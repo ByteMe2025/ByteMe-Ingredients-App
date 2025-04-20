@@ -1,0 +1,382 @@
+{% extends "layout.html" %}
+{% block title %}Recipes{% endblock %}
+{% block page %} - Recipes{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col s12">
+    <h4>My Recipes</h4>
+    <p>View and manage your recipes here.</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="row">
+          <div class="col s6">
+            <span class="card-title">My Recipes</span>
+          </div>
+          <div class="col s6 right-align">
+            <a class="waves-effect waves-light btn modal-trigger" href="#addRecipeModal">
+              <i class="material-icons left">add</i>Add Recipe
+            </a>
+          </div>
+        </div>
+        
+        <div class="row" id="recipesContainer">
+          {% if recipes|length == 0 %}
+            <div class="col s12 center-align">
+              <p>You haven't added any recipes yet.</p>
+              <a class="waves-effect waves-light btn modal-trigger" href="#addRecipeModal">
+                <i class="material-icons left">add</i>Add Your First Recipe
+              </a>
+            </div>
+          {% else %}
+            {% for recipe in recipes %}
+              <div class="col s12 m6 l4">
+                <div class="card">
+                  {% if recipe.image_url %}
+                    <div class="card-image">
+                      <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
+                      <span class="card-title">{{ recipe.name }}</span>
+                    </div>
+                  {% else %}
+                    <div class="card-image grey lighten-3" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                      <i class="material-icons" style="font-size: 48px; color: #aaa;">restaurant</i>
+                      <span class="card-title">{{ recipe.name }}</span>
+                    </div>
+                  {% endif %}
+                  <div class="card-content">
+                    <p style="height: 60px; overflow: hidden;">{{ recipe.description[:100] }}{% if recipe.description|length > 100 %}...{% endif %}</p>
+                    <p>
+                      <i class="material-icons tiny">schedule</i> Prep: {{ recipe.prep_time }} min
+                      <i class="material-icons tiny">timer</i> Cook: {{ recipe.cook_time }} min
+                    </p>
+                    
+                    {% if recipe.missing_ingredients|length > 0 %}
+                      <div class="chip red lighten-4">
+                        <i class="material-icons tiny">error_outline</i>
+                        Missing {{ recipe.missing_ingredients|length }} ingredient{% if recipe.missing_ingredients|length > 1 %}s{% endif %}
+                      </div>
+                    {% else %}
+                      <div class="chip light-green lighten-4">
+                        <i class="material-icons tiny">check_circle</i>
+                        Ready to cook!
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="card-action">
+                    <a href="/recipes/{{ recipe.id }}">View</a>
+                    <a href="#!" class="edit-recipe" data-id="{{ recipe.id }}">Edit</a>
+                    <a href="#!" class="delete-recipe" data-id="{{ recipe.id }}">Delete</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Recipe Modal -->
+<div id="addRecipeModal" class="modal modal-fixed-footer">
+  <form id="recipeForm" method="POST" action="/api/recipes">
+    <div class="modal-content">
+      <h4 id="modalTitle">Add Recipe</h4>
+      
+      <div class="row">
+        <input type="hidden" id="recipeId" name="id" value="">
+        
+        <div class="input-field col s12">
+          <input id="name" name="name" type="text" class="validate" required>
+          <label for="name">Recipe Name</label>
+        </div>
+        
+        <div class="input-field col s12">
+          <textarea id="description" name="description" class="materialize-textarea validate" required></textarea>
+          <label for="description">Description</label>
+        </div>
+        
+        <div class="input-field col s12">
+          <textarea id="instructions" name="instructions" class="materialize-textarea validate" required></textarea>
+          <label for="instructions">Instructions</label>
+        </div>
+        
+        <div class="input-field col s6">
+          <input id="prep_time" name="prep_time" type="number" min="0" class="validate" required>
+          <label for="prep_time">Prep Time (minutes)</label>
+        </div>
+        
+        <div class="input-field col s6">
+          <input id="cook_time" name="cook_time" type="number" min="0" class="validate" required>
+          <label for="cook_time">Cook Time (minutes)</label>
+        </div>
+        
+        <div class="file-field input-field col s12">
+          <div class="btn">
+            <span>Image</span>
+            <input type="file" name="image" accept="image/*">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload recipe image">
+          </div>
+        </div>
+        
+        <div class="col s12">
+          <h5>Ingredients</h5>
+          <div id="ingredientsContainer">
+            <!-- Ingredients will be added here -->
+          </div>
+          <button type="button" id="addIngredientBtn" class="btn-flat waves-effect waves-teal">
+            <i class="material-icons left">add</i>Add Ingredient
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <button type="submit" class="waves-effect waves-light btn">Save</button>
+    </div>
+  </form>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="modal">
+  <div class="modal-content">
+    <h4>Confirm Delete</h4>
+    <p>Are you sure you want to delete this recipe?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+    <a href="#!" id="confirmDelete" class="waves-effect waves-light btn red">Delete</a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modals
+    var modals = document.querySelectorAll('.modal');
+    M.Modal.init(modals);
+    
+    // Get all available ingredients for the ingredient selector
+    let availableIngredients = [];
+    fetch('/api/ingredients')
+      .then(response => response.json())
+      .then(data => {
+        availableIngredients = data;
+      });
+    
+    // Add ingredient to recipe form
+    document.querySelector('#addIngredientBtn').addEventListener('click', function() {
+      addIngredientRow();
+    });
+    
+    function addIngredientRow(data = null) {
+      const container = document.querySelector('#ingredientsContainer');
+      const rowIndex = container.children.length;
+      
+      const row = document.createElement('div');
+      row.className = 'row ingredient-row';
+      row.innerHTML = `
+        <div class="input-field col s5">
+          <select name="ingredients[${rowIndex}][ingredient_id]" required>
+            <option value="" disabled ${!data ? 'selected' : ''}>Choose ingredient</option>
+            ${availableIngredients.map(ing => `
+              <option value="${ing.id}" ${data && data.ingredient_id == ing.id ? 'selected' : ''}>
+                ${ing.name}
+              </option>
+            `).join('')}
+          </select>
+          <label>Ingredient</label>
+        </div>
+        <div class="input-field col s3">
+          <input type="number" name="ingredients[${rowIndex}][quantity]" min="0" step="0.01" 
+                 value="${data ? data.quantity : ''}" required>
+          <label>Quantity</label>
+        </div>
+        <div class="input-field col s3">
+          <input type="text" name="ingredients[${rowIndex}][unit]" 
+                 value="${data ? data.unit : ''}" required>
+          <label>Unit</label>
+        </div>
+        <div class="input-field col s1">
+          <button type="button" class="btn-floating btn-small waves-effect waves-light red remove-ingredient">
+            <i class="material-icons">remove</i>
+          </button>
+        </div>
+      `;
+      
+      container.appendChild(row);
+      
+      // Initialize the newly added select
+      M.FormSelect.init(row.querySelector('select'));
+      
+      // Add remove event listener
+      row.querySelector('.remove-ingredient').addEventListener('click', function() {
+        row.remove();
+      });
+    }
+    
+    // Edit recipe
+    document.querySelectorAll('.edit-recipe').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        fetch(`/api/recipes/${id}`)
+          .then(response => response.json())
+          .then(data => {
+            document.querySelector('#modalTitle').textContent = 'Edit Recipe';
+            document.querySelector('#recipeId').value = data.id;
+            document.querySelector('#name').value = data.name;
+            document.querySelector('#description').value = data.description;
+            document.querySelector('#instructions').value = data.instructions;
+            document.querySelector('#prep_time').value = data.prep_time;
+            document.querySelector('#cook_time').value = data.cook_time;
+            
+            // Update form action
+            document.querySelector('#recipeForm').action = `/api/recipes/${id}`;
+            document.querySelector('#recipeForm').method = 'PUT';
+            
+            // Clear existing ingredients
+            document.querySelector('#ingredientsContainer').innerHTML = '';
+            
+            // Add recipe ingredients
+            if (data.recipe_ingredients && data.recipe_ingredients.length > 0) {
+              data.recipe_ingredients.forEach(ingredient => {
+                addIngredientRow(ingredient);
+              });
+            } else {
+              // Add one empty ingredient row
+              addIngredientRow();
+            }
+            
+            // Update textareas (for Materialize CSS)
+            M.textareaAutoResize(document.querySelector('#description'));
+            M.textareaAutoResize(document.querySelector('#instructions'));
+            
+            // Update input labels (for Materialize CSS)
+            M.updateTextFields();
+            
+            // Open modal
+            M.Modal.getInstance(document.querySelector('#addRecipeModal')).open();
+          });
+      });
+    });
+    
+    // Delete recipe
+    let deleteId = null;
+    document.querySelectorAll('.delete-recipe').forEach(btn => {
+      btn.addEventListener('click', function() {
+        deleteId = this.getAttribute('data-id');
+        M.Modal.getInstance(document.querySelector('#deleteConfirmModal')).open();
+      });
+    });
+    
+    // Confirm delete
+    document.querySelector('#confirmDelete').addEventListener('click', function() {
+      if (deleteId) {
+        fetch(`/api/recipes/${deleteId}`, {
+          method: 'DELETE'
+        })
+          .then(response => {
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              M.toast({html: 'Failed to delete recipe'});
+            }
+          });
+      }
+    });
+    
+    // Form submission handling
+    document.querySelector('#recipeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const method = this.method.toUpperCase();
+      const url = this.action;
+      
+      // Convert form data to JSON
+      const data = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        instructions: formData.get('instructions'),
+        prep_time: parseInt(formData.get('prep_time')),
+        cook_time: parseInt(formData.get('cook_time')),
+        ingredients: []
+      };
+      
+      // Process ingredients
+      document.querySelectorAll('.ingredient-row').forEach((row, index) => {
+        const ingredientId = row.querySelector('select').value;
+        const quantity = row.querySelector('input[name$="[quantity]"]').value;
+        const unit = row.querySelector('input[name$="[unit]"]').value;
+        
+        if (ingredientId && quantity && unit) {
+          data.ingredients.push({
+            ingredient_id: parseInt(ingredientId),
+            quantity: parseFloat(quantity),
+            unit: unit
+          });
+        }
+      });
+      
+      // Handle file upload if present
+      const imageFile = formData.get('image');
+      if (imageFile && imageFile.name) {
+        // Create a new FormData for file upload
+        const fileFormData = new FormData();
+        fileFormData.append('image', imageFile);
+        
+        // Upload the image first
+        fetch('/api/upload', {
+          method: 'POST',
+          body: fileFormData
+        })
+          .then(response => response.json())
+          .then(fileData => {
+            // Add image URL to recipe data
+            data.image_url = fileData.url;
+            // Then save the recipe
+            saveRecipe(url, method, data);
+          })
+          .catch(error => {
+            console.error('Error uploading image:', error);
+            // Continue without image
+            saveRecipe(url, method, data);
+          });
+      } else {
+        // Save recipe without image
+        saveRecipe(url, method, data);
+      }
+    });
+    
+    function saveRecipe(url, method, data) {
+      fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            response.json().then(data => {
+              M.toast({html: data.message || 'Failed to save recipe'});
+            });
+          }
+        });
+    }
+    
+    // Add one empty ingredient row to start
+    if (document.querySelector('#ingredientsContainer')) {
+      addIngredientRow();
+    }
+  });
+</script>
+{% endblock %}
