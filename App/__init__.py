@@ -4,6 +4,32 @@ from .controllers import *
 from .main import *
 import os
 
+def show_recipe_instructions(recipeID):
+    recipe = Recipe.query.get(recipeID)
+    user_recipes = UserRecipes.query.all()
+    recipes = Recipe.query.all()
+    if not recipe:
+        flash('Recipe not found')
+        return redirect(url_for('index_views.home_page'))
+    else:
+        url = f'https://api.spoonacular.com/recipes/{recipeID}/analyzedInstructions?apiKey=dcd0266fa29a472f9bc5245206a24923'
+        try:
+            response = requests.get(url)
+            data = response.json()
+            instructions = []
+            instructNumbers = []
+            for recipeinstructions in data['steps']:
+                instructions.append(recipeinstructions['step'])
+            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, instructNumbers=instructNumbers)
+        except IntegrityError:
+            flash('Failed to fetch recipe instructions')
+            return redirect(url_for('index_views.home_page'))
+
+
+@index_views.route('/updatedHome<id>', methods=['GET'])
+def updatedHome_page(id):
+    show_recipe_instructions(id)
+    
 
 @index_views.route('/signup', methods=['POST'])
 def register_user():
@@ -79,12 +105,12 @@ def remove_fav_recipe(id):
         flash('Recipe removed from user')
         return redirect(url_for('index_views.home_page'))
 
-""" @index_views.route('/api_call', methods=['GET'])
+@index_views.route('/api_call', methods=['GET'])
 def api_call():
-    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=1&instructionsRequired=true&addRecipeInformation=true'
+    url = f'https://api.spoonacular.com/recipes/{recipeID}/analyzedInstructions?apiKey=dcd0266fa29a472f9bc5245206a24923'
     try:
         response = requests.get(url)
         data = response.json()
         return jsonify(data)
     except IntegrityError:
-        return jsonify('message: Failed to fetch recipes'), 500 """
+        return jsonify('message: Failed to fetch recipes'), 500
