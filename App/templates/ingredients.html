@@ -62,8 +62,10 @@
             <div class="col s12 m10 offset-m1">
                 <img src="https://img.spoonacular.com/ingredients_100x100/{{user_ingredient.ingredient.image}}">
                 <p>{{user_ingredient.ingredient.name}}</p>
-                <p>{{user_ingredient.amount}}</p>
-                <a href="/removeIngredient/{{user_ingredient.id}}" class="btn waves-effect waves-light" type="button">Remove Ingredient</a>
+                <p>Amount: {{user_ingredient.amount | int }}</p>
+                <form action="/removeIngredient/{{user_ingredient.id}}" method="POST">
+                    <button type="submit" class="btn waves-effect waves-light">Remove Ingredient</button>
+                </form>>
             </div>
         </div>
     </div>
