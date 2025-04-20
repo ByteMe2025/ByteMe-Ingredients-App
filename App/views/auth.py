@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
-from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity, jwt_manager
+from flask import Blueprint, app, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
+from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, get_jwt_identity, JWTManager
 from App.models.user import Ingredient, UserIngredients, User, Recipe, UserRecipes
 
 from.index import index_views
+
+jwt = JWTManager(app)
 
 from App.controllers import (
     login
