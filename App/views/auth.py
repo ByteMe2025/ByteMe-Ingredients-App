@@ -30,7 +30,7 @@ def identify_page():
 @auth_views.route('/login', methods=['POST'])
 def login_action():
     data = request.form
-    token = login(data['username'], data['password'])
+    token = login(str(data['username']), str(data['password']))
     if not token:
         flash('Bad username or password given'), 401
         response = redirect(url_for('index_views.login_page'))
