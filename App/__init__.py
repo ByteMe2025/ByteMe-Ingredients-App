@@ -5,7 +5,7 @@ from .main import *
 import os
 
 
-@index_views.route('/signup', methods=['GET'])
+@index_views.route('/signup', methods=['POST'])
 def register_user():
     data = request.form
     newUser = create_user(data['username'], data['password'])
