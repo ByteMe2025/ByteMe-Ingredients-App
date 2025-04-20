@@ -24,7 +24,7 @@ def register_page():
 def home_page():
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
-    return render_template('index.html', recipes=recipes, user_recipes=user_recipes)
+    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
@@ -51,16 +51,11 @@ def add_fav_recipe(id):
     recipe = Recipe.query.get(id)
     if not recipe: 
         flash('Recipe not found')
-        return redirect(url_for('auth_views.show_recipes'))
+        return redirect(url_for('index_views.home_page'))
     else: 
-        current_user.add_fav_recipe_to_user(current_user.id, id)
+        recipe.add_fav_recipe_to_user(current_user.id)
         flash('Recipe added to user')
-        return redirect(url_for('auth_views.show_recipes'))
-
-@auth_views.route('/recipes', methods=['GET'])
-def show_recipes():
-    recipes = Recipe.query.all()
-    return render_template('recipes.html', recipes=recipes)
+        return redirect(url_for('index_views.home_page'))
 
 @auth_views.route('/removeIngredient/<id>', methods=['POST'])
 def remove_ingredient(id):
@@ -75,14 +70,14 @@ def remove_ingredient(id):
 
 @auth_views.route('/removeFavrecipe/<id>', methods=['POST'])
 def remove_fav_recipe(id):
-    recipe = Recipe.query.get(id)
-    if not recipe: 
+    user_recipe = UserRecipes.query.get(id)
+    if not user_recipe: 
         flash('Recipe not found')
-        return redirect(url_for('auth_views.show_recipes'))
+        return redirect(url_for('index_views.home_page'))
     else:
-        current_user.remove_fav_recipe_from_user(current_user.id, id)
+        user_recipe.remove_fav_recipe_from_user(current_user.id)
         flash('Recipe removed from user')
-        return redirect(url_for('auth_views.show_recipes'))
+        return redirect(url_for('index_views.home_page'))
 
 """ @index_views.route('/api_call', methods=['GET'])
 def api_call():
