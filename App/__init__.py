@@ -2,6 +2,7 @@ from .models import *
 from .views import *
 from .controllers import *
 from .main import *
+import os
 
 
 @index_views.route('/home', methods=['GET'])

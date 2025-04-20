@@ -37,6 +37,7 @@ def login_action():
     else:
         flash('Login Successful')
         response = redirect(url_for('index_views.home_page'))
+        print("token", token)
         set_access_cookies(response, token) 
     return response
 
