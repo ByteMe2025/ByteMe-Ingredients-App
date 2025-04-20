@@ -41,17 +41,10 @@ class Recipe (db.Model):
         self.dish_type = dish_type
 
       
-    def add_fav_recipe_to_user(self, recipeID):
-        userRecipe = UserRecipes(self.id, recipeID)
+    def add_fav_recipe_to_user(self, user_id):
+        userRecipe = UserRecipes(user_id, self.id)
         db.session.add(userRecipe)
         db.session.commit()
-
-
-    def remove_fav_recipe_from_user(self, recipeID):
-        userRecipe = UserRecipes.query.filter_by(user_id=self.id, recipe_id=recipeID).first()
-        if userRecipe:
-            db.session.delete(userRecipe)
-            db.session.commit()
 
 class UserRecipes(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -61,6 +54,12 @@ class UserRecipes(db.Model):
     def __init__(self, user_id, recipe_id):
         self.user_id = user_id
         self.recipe_id = recipe_id
+
+    def remove_fav_recipe_from_user(self, userID):
+        userRecipe = UserRecipes.query.filter_by(user_id=userID, id=self.id).first()
+        if userRecipe:
+            db.session.delete(userRecipe)
+            db.session.commit()
 
 class UserIngredients(db.Model):
     id = db.Column(db.Integer, primary_key = True)
