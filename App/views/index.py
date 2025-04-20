@@ -1,7 +1,6 @@
 from sqlite3 import IntegrityError
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, url_for
 from App.controllers import create_user, initialize
-from App.models.user import Ingredient, UserIngredients, User, Recipe, UserRecipes
 import requests
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
