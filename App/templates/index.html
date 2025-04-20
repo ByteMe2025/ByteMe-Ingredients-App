@@ -17,10 +17,7 @@
                 <div class="col s12 m10 offset-m1">
                     <img src="{{recipe.image}}">
                     <p>{{recipe.title}}</p>
-                    <a href="/updatedHome/{{recipe.id}}">Click Here to Show Recipe Instructions</a>
-                    <form action="/addFavrecipe/{{recipe.id}}" method="POST">
-                        <button type="submit" class="btn waves-effect waves-light">Favourite Recipe</button>
-                    </form>
+                    <a href="/updatedHome/{{recipe.id}}">Click Here to Show Recipe Instructions and Favourite</a>
                 </div>
             </div>
         </div>
@@ -33,6 +30,7 @@
                 <div class="col s12 m10 offset-m1">
                     <img src="{{user_recipe.recipe.image}}" style="width: 80px; height: 80px;">
                     <p>{{user_recipe.recipe.title}}</p>
+                    <a href="/updatedHome/{{recipe.id}}">Click Here to Show Recipe Instructions</a>
                     <form action="/removeFavrecipe/{{user_recipe.id}}" method="POST">
                         <button type="submit" class="btn waves-effect waves-light">Unfavourite Recipe</button>
                     </form>
@@ -41,4 +39,21 @@
         </div>
     {% endfor %}
 
+    {% if expanded %}
+        <h1>Recipe Instructions</h1>
+        {% set counter = 1 %}
+        {% for instruction in instructions %}
+            <div class="container" style="margin-top: 10%;"> 
+                <div class="row">
+                    <div class="col s12 m10 offset-m1">
+                        <p>{{counter}}{{instruction}}</p>
+                        {% set counter = counter + 1 %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <form action="/addFavrecipe/{{recipe.id}}" method="POST">
+            <button type="submit" class="btn waves-effect waves-light">Favourite Recipe</button>
+        </form>
+    {% endif %}
 {% endblock %}

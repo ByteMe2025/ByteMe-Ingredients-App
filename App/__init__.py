@@ -17,10 +17,9 @@ def show_recipe_instructions(recipeID):
             response = requests.get(url)
             data = response.json()
             instructions = []
-            instructNumbers = []
-            for recipeinstructions in data['steps']:
-                instructions.append(recipeinstructions['step'])
-            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, instructNumbers=instructNumbers)
+            for step in data[0]['steps']:
+                instructions.append(step['step'])
+            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, expanded=True)
         except IntegrityError:
             flash('Failed to fetch recipe instructions')
             return redirect(url_for('index_views.home_page'))
@@ -50,7 +49,7 @@ def register_page():
 def home_page():
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
-    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user)
+    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, expanded=False)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
