@@ -2,7 +2,7 @@ from flask import jsonify
 from .user import create_user
 from sqlite3 import IntegrityError
 from App.database import db
-from App.models import Recipe, Ingredient
+from App.models import Recipe, Ingredient, RecipeIngredients
 import requests
 
 def initialize():
@@ -37,7 +37,9 @@ def api_call():
                             ing = Ingredient(
                                 name = ingredient['name'],
                                 image = ingredient['image'],
-                            )  
+                            )
+                            rec_ing = RecipeIngredients(recipe_id=rec.id, ingredient_id=ing.id)
+                            db.session.add(rec_ing)  
                             db.session.add(ing)
                             db.session.commit()
         db.session.commit()
