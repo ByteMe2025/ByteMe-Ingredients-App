@@ -5,6 +5,21 @@ from .main import *
 import os
 
 
+@index_views.route('/signup', methods=['GET'])
+def register_user():
+    data = request.form
+    newUser = create_user(data['username'], data['password'])
+    if newUser:
+        flash('User created successfully')
+        return redirect(url_for('index_views.login_page'))
+    else:
+        flash('User already exists')
+        return redirect(url_for('index_views.register_page'))
+    
+@index_views.route('/register', methods=['GET'])
+def register_page():
+    return render_template('register.html')
+
 @index_views.route('/home', methods=['GET'])
 def home_page():
     user_recipes = UserRecipes.query.all()
