@@ -79,7 +79,7 @@ class UserIngredients(db.Model):
             db.session.commit()
 
     def update_amount(self, new_amount):
-        self.amount = new_amount
+        self.amount = self.amount + new_amount
         db.session.commit()
 
 class RecipeIngredients(db.Model):
