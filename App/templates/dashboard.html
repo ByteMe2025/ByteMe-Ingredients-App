@@ -170,12 +170,9 @@
         <div class="flex items-center">
           <div class="flex items-center space-x-2 py-2 px-3 rounded hover:bg-primary-dark transition-colors">
             <span class="material-icons">account_circle</span>
-            <span class="hidden md:inline" id="username">Loading...</span>
+            <span class="hidden md:inline">Username</span>
           </div>
-          <button 
-            id="mobile-menu-button"
-            class="md:hidden p-2 mobile-menu-button"
-          >
+          <button class="md:hidden p-2 mobile-menu-button">
             <span class="material-icons">menu</span>
           </button>
         </div>
@@ -183,124 +180,74 @@
     </div>
   </header>
   
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-menu-content">
-      <div class="p-4 bg-primary text-white flex items-center justify-between">
-        <h2 class="text-lg font-medium">Menu</h2>
-        <button id="close-menu-button" class="p-1">
-          <span class="material-icons">close</span>
-        </button>
-      </div>
-      <nav class="p-4">
-        <ul class="space-y-3">
-          <li>
-            <a href="dashboard.html" class="mobile-nav-link">
-              <span class="material-icons mr-2">dashboard</span> Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="ingredients.html" class="mobile-nav-link">
-              <span class="material-icons mr-2">kitchen</span> My Ingredients
-            </a>
-          </li>
-          <li>
-            <a href="recipes.html" class="mobile-nav-link">
-              <span class="material-icons mr-2">menu_book</span> Recipes
-            </a>
-          </li>
-          <li>
-            <a href="profile.html" class="mobile-nav-link">
-              <span class="material-icons mr-2">person</span> Profile
-            </a>
-          </li>
-          <li class="border-t my-2 pt-2">
-            <button 
-              id="logout-button"
-              class="w-full mobile-nav-link text-red-600"
-            >
-              <span class="material-icons mr-2">logout</span> Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-  
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-6">
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-gray-900 mb-2">Dashboard</h1>
       <p class="text-gray-600">Welcome to ByteMe Ingredients & Recipes! Manage your pantry and find recipes.</p>
     </div>
-    
+
     <!-- Stats Section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
       <div class="card stats-card">
         <div class="stats-icon">
           <span class="material-icons">kitchen</span>
         </div>
         <div>
           <p class="text-sm text-gray-500">Total Ingredients</p>
-          <p class="text-xl font-semibold" id="ingredients-count">0</p>
+          <p class="text-xl font-semibold">{{ user_ingredients|length }}</p>
           <p class="text-xs text-gray-400">In your pantry</p>
         </div>
       </div>
-      
+
       <div class="card stats-card">
         <div class="stats-icon">
           <span class="material-icons">menu_book</span>
         </div>
         <div>
           <p class="text-sm text-gray-500">Saved Recipes</p>
-          <p class="text-xl font-semibold" id="recipes-count">0</p>
+          <p class="text-xl font-semibold">{{ user_recipes|length }}</p>
           <p class="text-xs text-gray-400">In your collection</p>
         </div>
       </div>
-      
-      <div class="card stats-card">
-        <div class="stats-icon">
-          <span class="material-icons">check_circle</span>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Ready to Cook</p>
-          <p class="text-xl font-semibold" id="ready-count">0</p>
-          <p class="text-xs text-gray-400">Recipes you can make now</p>
-        </div>
-      </div>
-      
-      <div class="card stats-card">
-        <div class="stats-icon">
-          <span class="material-icons">shopping_cart</span>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Shopping List</p>
-          <p class="text-xl font-semibold" id="shopping-count">0</p>
-          <p class="text-xs text-gray-400">Items to buy</p>
-        </div>
-      </div>
     </div>
-    
+
     <!-- Recent Items Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Recent Ingredients -->
       <div>
         <h2 class="text-lg font-medium text-gray-900 mb-3">Recent Ingredients</h2>
-        <div class="card" id="recent-ingredients">
-          <div class="p-4 text-center text-gray-500">
-            <span class="material-icons text-4xl text-gray-300 mb-2">kitchen</span>
-            <p>No ingredients added yet</p>
-            <a href="ingredients.html" class="text-primary hover:underline mt-2 inline-block">Add ingredients</a>
+        <div class="card">
+          <div class="p-4 text-gray-500" style="max-height: 200px; overflow-y: auto;">
+            {% if user_ingredients %}
+              {% for ingredient in user_ingredients %}
+                <div class="recent-item">
+                  <span class="material-icons mr-2">kitchen</span>
+                  <p>{{ ingredient.title }}</p>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-center text-gray-400">No ingredients added yet</p>
+            {% endif %}
           </div>
         </div>
       </div>
-      
+
+      <!-- Recent Recipes -->
       <div>
         <h2 class="text-lg font-medium text-gray-900 mb-3">Recent Recipes</h2>
-        <div class="card" id="recent-recipes">
-          <div class="p-4 text-center text-gray-500">
-            <span class="material-icons text-4xl text-gray-300 mb-2">menu_book</span>
-            <p>No recipes saved yet</p>
-            <a href="recipes.html" class="text-primary hover:underline mt-2 inline-block">Find recipes</a>
+        <div class="card">
+          <div class="p-4 text-gray-500" style="max-height: 200px; overflow-y: auto;">
+            {% if user_recipes %}
+              {% for recipe in user_recipes %}
+                <div class="recent-item">
+                  <span class="material-icons mr-2">menu_book</span>
+                  <p>{{ recipe.title }}</p>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-center text-gray-400">No recipes saved yet</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -313,85 +260,5 @@
       <p>© 2025 ByteMe Ingredients & Recipes</p>
     </div>
   </footer>
-
-  <script>
-    // Check if user is logged in
-    function checkAuth() {
-      const savedUser = localStorage.getItem('byteme_user');
-      if (!savedUser) {
-        window.location.href = 'login.html';
-        return null;
-      }
-      
-      try {
-        return JSON.parse(savedUser);
-      } catch (e) {
-        localStorage.removeItem('byteme_user');
-        window.location.href = 'login.html';
-        return null;
-      }
-    }
-    
-    // Set username in header
-    function setUsername(user) {
-      document.getElementById('username').textContent = user.username;
-    }
-    
-    // Logout function
-    function logout() {
-      localStorage.removeItem('byteme_user');
-      window.location.href = 'login.html';
-    }
-    
-    // Mobile menu functionality
-    function setupMobileMenu() {
-      const menuButton = document.getElementById('mobile-menu-button');
-      const closeButton = document.getElementById('close-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      
-      menuButton.addEventListener('click', () => {
-        mobileMenu.classList.add('open');
-      });
-      
-      closeButton.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-      });
-      
-      mobileMenu.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) {
-          mobileMenu.classList.remove('open');
-        }
-      });
-    }
-    
-    // Logout button
-    function setupLogoutButton() {
-      document.getElementById('logout-button').addEventListener('click', logout);
-    }
-    
-    // Load dashboard data
-    function loadDashboardData() {
-
-      
-      // Set counts
-      document.getElementById('ingredients-count').textContent = '0';
-      document.getElementById('recipes-count').textContent = '0';
-      document.getElementById('ready-count').textContent = '0';
-      document.getElementById('shopping-count').textContent = '0';
-      
-
-    }
-    
-    // Initialize page
-    window.addEventListener('DOMContentLoaded', () => {
-      const user = checkAuth();
-      if (user) {
-        setUsername(user);
-        setupMobileMenu();
-        setupLogoutButton();
-        loadDashboardData();
-      }
-    });
-  </script>
 </body>
 </html>
