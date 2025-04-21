@@ -123,7 +123,7 @@
             <button type="submit" class="btn" onclick="toggleDetails('details-{{ recipe.id }}')">View Recipe Instructions</button>
         </div>
         <div id="details-{{ recipe.id }}" class="hidden mt-4">
-          <p class="text-gray-700">{{ recipe.instructions }}</p>
+          <p class="text-gray-700 whitespace-pre-line">{{loop.index}}. {{ recipe.instructions }}</p>
           <form action="/addFavrecipe/{{recipe.id}}" method="POST" class="mt-4">
             <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
             <button type="submit" class="btn">Add to My Recipes</button>
