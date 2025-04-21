@@ -134,11 +134,11 @@ def remove_ingredient(id):
     user_ingredient = UserIngredients.query.get(id)
     if not user_ingredient: 
         flash('Ingredient not found')
-        return redirect(url_for('auth_views.show_ingredients'))
+        return redirect(url_for('auth_views.home_page'))
     else:
         user_ingredient.remove_ingredient_from_user(current_user.id)
         flash('Ingredient removed from user')
-        return redirect(url_for('auth_views.show_ingredients'))
+        return redirect(url_for('auth_views.home_page'))
 
 @auth_views.route('/removeFavrecipe/<id>', methods=['POST'])
 @jwt_required()
