@@ -11,7 +11,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS (via CDN for this example) -->
+  <!-- Tailwind CSS  -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
@@ -522,12 +522,10 @@
       document.getElementById('display-name').value = user.username;
       document.getElementById('email').value = user.email;
       
-      // Counts (would come from API in a real app)
+      // Counts 
       document.getElementById('ingredient-count').textContent = '3';
       document.getElementById('recipe-count').textContent = '3';
       
-      // Member since date (in a real app, this would come from user data)
-      document.getElementById('member-since').textContent = 'April 20, 2025';
     }
     
     // Handle profile form submission
@@ -550,7 +548,7 @@
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         
-        // Basic validation (in a real app, this would be more extensive)
+        // Basic validation 
         if (!displayName || !email) {
           errorAlert.textContent = 'Display name and email are required';
           errorAlert.classList.remove('hidden');
@@ -563,7 +561,7 @@
           return;
         }
         
-        // For this demo, verify current password is "bobpass"
+        //  verify current password is "bobpass"
         if (currentPassword !== 'bobpass') {
           errorAlert.textContent = 'Current password is incorrect';
           errorAlert.classList.remove('hidden');
@@ -576,10 +574,7 @@
           errorAlert.classList.remove('hidden');
           return;
         }
-        
-        // In a real app, this would be an API call
-        // For this demo, we'll just update localStorage
-        const savedUser = JSON.parse(localStorage.getItem('byteme_user'));
+            const savedUser = JSON.parse(localStorage.getItem('byteme_user'));
         if (savedUser) {
           savedUser.username = displayName;
           savedUser.email = email;
