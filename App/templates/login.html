@@ -211,7 +211,7 @@
       const password = document.getElementById('password').value;
       const errorMessage = document.getElementById('error-message');
       
-      // For this demo, just check if credentials match the demo ones
+      // check if credentials match the demo ones
       if (username === 'bob' && password === 'bobpass') {
         // Store user data in localStorage
         const user = {
@@ -236,7 +236,7 @@
       const savedUser = localStorage.getItem('byteme_user');
       if (savedUser) {
         try {
-          JSON.parse(savedUser); // Make sure it's valid JSON
+          JSON.parse(savedUser); // Makes sure it's valid JSON
           window.location.href = 'dashboard.html';
         } catch (e) {
           // Invalid JSON, remove it
