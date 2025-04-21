@@ -1,51 +1,171 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ByteMe Ingredients & Recipes - Sign Up</title>
   
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-     <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% block title %}{% endblock %}</title>
-
-  </head>
-  <body>
-    <div class="container">
-        <div class="row" style="margin-top: 10%;">
-          <div class="col s12 m10 offset-m1">
-            <div class="card-content">
-                <form method="POST" action="/signup" style="display: flex; flex-wrap: nowrap; align-items: center; margin-right: 10px;">
-                    <div style="margin-right: 10px;">
-                        <input placeholder="username" name="username" type="text" required>
-                        <label for="username">username</label>
-                    </div>
-                    <div style="margin-right: 10px;">
-                        <input placeholder="password" name="password" type="password" required>
-                        <label for="password">Password</label>
-                    </div>
-                    <button type="submit" class="btn waves-effect waves-light">Sign Up</button>
-                </form>
-            </div>
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-light: #d1fae5;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .signup-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 1.5rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 28rem;
+      overflow: hidden;
+    }
+    
+    .card-header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .card-body {
+      padding: 2rem;
+    }
+    
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #374151;
+      font-size: 0.875rem;
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+    
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 0.625rem 1.25rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .footer {
+      background-color: white;
+      padding: 1rem;
+      text-align: center;
+      color: #6b7280;
+      border-top: 1px solid #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="card">
+      <div class="card-header">
+        <div class="flex items-center justify-center">
+          <span class="material-icons text-3xl mr-2">person_add</span>
+          <h1 class="text-2xl font-medium">Sign Up</h1>
+        </div>
+        <p class="mt-2 text-white/80">Create your ByteMe account</p>
+      </div>
+      
+      <div class="card-body">
+        <form method="POST" action="/signup">
+          <div class="input-group">
+            <label for="username" class="input-label">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              class="input-field" 
+              placeholder="Enter your username"
+              required
+            >
           </div>
+          
+          <div class="input-group">
+            <label for="password" class="input-label">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="input-field" 
+              placeholder="Enter your password"
+              required
+            >
+          </div>
+          
+          <button type="submit" class="btn">
+            Sign Up
+          </button>
+        </form>
+        
+        <div class="mt-4 text-center">
+          <p class="text-sm text-gray-600">
+            Already have an account? <a href="/login" class="text-primary font-medium">Log In</a>
+          </p>
         </div>
       </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script>
-       M.AutoInit();
-
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-              {% for message in messages %}
-              M.toast({html: '{{message}}'})
-              {% endfor %}
-          {% endif %}
-        {% endwith %}
-       
-    </script>
-    
-  </body>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <div class="container mx-auto">
+      <p>© 2025 ByteMe Ingredients & Recipes</p>
+    </div>
+  </footer>
+</body>
 </html>
