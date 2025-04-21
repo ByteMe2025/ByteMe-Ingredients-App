@@ -224,7 +224,7 @@
                 <div class="recent-item flex justify-between items-center">
                   <div class="flex items-center">
                     <span class="material-icons mr-2">kitchen</span>
-                    <p>{{ ingredient.title }} ({{ ingredient.amount }})</p>
+                    <p>{{ ingredient.name }} ({{ ingredient.amount | int }})</p>
                   </div>
                   <form action="/removeIngredient/{{ingredient.id}}" method="POST">
                     <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
