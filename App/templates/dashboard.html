@@ -250,7 +250,7 @@
                 <div class="recent-item flex justify-between items-center">
                   <div class="flex items-center">
                     <span class="material-icons mr-2">menu_book</span>
-                    <p class="cursor-pointer text-primary hover:underline" onclick="openRecipeModal('{{ recipe.id }}')">{{ recipe.title }}</p>
+                    <p class="cursor-pointer text-primary hover:underline" onclick="openRecipeModal('{{ recipe.id }}')">{{ recipe.recipe.title }}</p>
                   </div>
                   <form action="/removeFavrecipe/{{ recipe.id }}" method="POST">
                     <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
