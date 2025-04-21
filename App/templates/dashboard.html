@@ -275,12 +275,12 @@
                           <!-- <p class="mt-4"><strong>Instructions:</strong> {{ recipe.instructions }}</p> -->
                           <p class="mt-4"><strong>Ingredients:</strong></p>
                           <ul class="list-disc pl-5">
-                            {% for ing in ings_per_rec[recipe.id]['owned'] %}
+                            {% for ing in ings_per_rec[recipe.recipe_id]['owned'] %}
                               <li>
                                 {{ ing }} - <span class="text-green-500">Available</span>
                               </li>
                             {% endfor %}
-                            {% for ing in ings_per_rec[user_recipe.recipe_id]['missing'] %}
+                            {% for ing in ings_per_rec[recipe.recipe_id]['missing'] %}
                               <li>
                                 {{ ing }} - <span class="text-red-500">Missing</span>
                               </li>
@@ -293,7 +293,7 @@
                     </div>
                   </div>
                 </div>
-                
+
               {% endfor %}
             {% else %}
               <p class="text-center text-gray-400">No recipes saved yet</p>
