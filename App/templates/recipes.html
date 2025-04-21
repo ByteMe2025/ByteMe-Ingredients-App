@@ -81,7 +81,7 @@
         <nav class="hidden md:block">
           <ul class="flex space-x-6">
             <li>
-              <a href="/login" class="nav-link">Dashboard</a>
+              <a href="/home" class="nav-link">Dashboard</a>
             </li>
             <li>
               <a href="/ingredients" class="nav-link">My Ingredients</a>
@@ -114,6 +114,8 @@
             <h2 class="text-lg font-medium text-gray-900">{{ recipe.title }}</h2>
             <p class="text-sm text-gray-500">Ready in: {{ recipe.ready_in_mins }} mins</p>
             <p class="text-sm text-gray-500">Servings: {{ recipe.servings }}</p>
+            <P class="text-sm text-gray-500">Price per Serving: {{ recipe.price_per_serving }}</p>
+            <P class="text-sm text-gray-500">Dish Type: {{ recipe.dish_type }}</p>
           </div>
           <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="w-12 h-12 rounded-full">
         </div>
