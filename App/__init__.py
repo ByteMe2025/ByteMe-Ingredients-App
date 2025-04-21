@@ -108,7 +108,7 @@ def show_ingredients():
     ingredients = Ingredient.query.all()
     return render_template('ingredients.html', ingredients=ingredients)
 
-@auth_views.route('/recipes', methods=['POST'])
+@auth_views.route('/recipes', methods=['GET'])
 @jwt_required()
 def show_recipes():
     recipes = Recipe.query.all()
