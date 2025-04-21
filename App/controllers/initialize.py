@@ -13,25 +13,29 @@ def initialize():
 
 def api_call():
     url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=dcd0266fa29a472f9bc5245206a24923&number=2&instructionsRequired=true&addRecipeInformation=true'
+    instructions = ""
     try:
         response = requests.get(url)
         data = response.json()
         for recipe in data['results']:
+            rec = Recipe(
+                id = recipe['id'],
+                title=recipe['title'],
+                image=recipe['image'],
+                ready_in_mins=recipe['readyInMinutes'],
+                servings=recipe['servings'],
+                health_score=recipe['healthScore'],
+                price_per_serving=recipe['pricePerServing'],
+                cheap =recipe['cheap'],
+                dish_type = recipe['dishTypes'][0],
+                instructions = ""
+            )
+            db.session.add(rec)
+
             for instruction in recipe.get('analyzedInstructions', []):
                 for step in instruction.get('steps', []):
-                    rec = Recipe(
-                        id = recipe['id'],
-                        title=recipe['title'],
-                        image=recipe['image'],
-                        ready_in_mins=recipe['readyInMinutes'],
-                        servings=recipe['servings'],
-                        health_score=recipe['healthScore'],
-                        price_per_serving=recipe['pricePerServing'],
-                        cheap =recipe['cheap'],
-                        dish_type = recipe['dishTypes'][0]
-                        )
-                    db.session.add(rec)
-                    
+                    instructions += step['step'] + '\n'
+
                     for ingredient in step.get('ingredients', []):
                         if not Ingredient.query.filter_by(name=ingredient['name']).first():
                             ing = Ingredient(
@@ -42,6 +46,7 @@ def api_call():
                             db.session.commit()
                             rec_ing = RecipeIngredients(recipe_id=rec.id, ingredient_id=ing.id)
                             db.session.add(rec_ing)
+                rec.updateInstructions(instructions)
         db.session.commit()
     except IntegrityError:
         return jsonify('message: Failed to fetch recipes'), 500
