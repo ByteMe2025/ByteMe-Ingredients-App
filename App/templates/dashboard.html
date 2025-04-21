@@ -284,7 +284,26 @@
         </button>
       </div>
       <div id="recipe-content" class="text-gray-700">
+
         <!-- Recipe details will be dynamically loaded here -->
+        <div id="recipe-modal-{{ recipe.id }}" class="recipe-modal-content hidden">
+          <h2 class="text-xl font-bold">{{ recipe.title }}</h2>
+          <!-- <p class="mt-4"><strong>Instructions:</strong> {{ recipe.instructions }}</p> -->
+          <p class="mt-4"><strong>Ingredients:</strong></p>
+          <ul class="list-disc pl-5">
+            {% for ing in ings_per_rec[recipe.id]['owned'] %}
+              <li>
+                {{ ing }} - <span class="text-green-500">Available</span>
+              </li>
+            {% endfor %}
+            {% for ing in ings_per_rec[user_recipe.recipe_id]['missing'] %}
+              <li>
+                {{ ing }} - <span class="text-red-500">Missing</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
       </div>
       <div class="mt-4 text-right">
         <button onclick="closeRecipeModal()" class="btn bg-gray-200 hover:bg-gray-300 text-gray-700">Close</button>
@@ -306,26 +325,5 @@
       document.getElementById('recipe-modal').classList.add('hidden');
     }
   </script>
-
-  <!-- Pre-rendered Modals for Each Recipe -->
-  {% for recipe in user_recipes %}
-  <div id="recipe-modal-{{ recipe.id }}" class="recipe-modal-content hidden">
-    <h2 class="text-xl font-bold">{{ recipe.title }}</h2>
-    <p class="mt-4"><strong>Instructions:</strong> {{ recipe.instructions }}</p>
-    <p class="mt-4"><strong>Ingredients:</strong></p>
-    <ul class="list-disc pl-5">
-      {% for ingredient in recipe.ingredients %}
-        <li>
-          {{ ingredient.title }} - 
-          {% if ingredient.available %}
-            <span class="text-green-500">Available</span>
-          {% else %}
-            <span class="text-red-500">Missing</span>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endfor %}
 </body>
 </html>

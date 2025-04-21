@@ -42,7 +42,7 @@ def show_recipe_instructions(recipeID):
             instructions = []
             for step in data[0]['steps']:
                 instructions.append(step['step'])
-            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, expanded=True, recipe=recipe, ings_per_rec=ings_per_rec)
+            return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, instructions=instructions, recipe=recipe, ings_per_rec=ings_per_rec)
         except IntegrityError:
             flash('Failed to fetch recipe instructions')
             return redirect(url_for('index_views.home_page'))
@@ -83,7 +83,7 @@ def home_page():
             'missing': missing
         }
 
-    return render_template('dashboard.html', user_ingredients=user_ingredients,recipes=recipes, user_recipes=user_recipes, current_user=current_user, expanded=False, ings_per_rec=ings_per_rec)
+    return render_template('dashboard.html', user_ingredients=user_ingredients, recipes=recipes, user_recipes=user_recipes, current_user=current_user, ings_per_rec=ings_per_rec)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
