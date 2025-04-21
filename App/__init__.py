@@ -73,7 +73,7 @@ def register_page():
 def home_page():
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
-    user_ingredient = UserIngredients.query.all()
+    user_ingredients = UserIngredients.query.all()
 
     ings_per_rec = {}
     for user_recipe in user_recipes:
