@@ -47,6 +47,10 @@ class Recipe (db.Model):
         db.session.add(userRecipe)
         db.session.commit()
 
+    def updateInstructions(self, instructions):
+        self.instructions = instructions
+        db.session.commit()
+
 class UserRecipes(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable = False)
