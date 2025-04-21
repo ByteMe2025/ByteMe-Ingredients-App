@@ -26,6 +26,7 @@ class Recipe (db.Model):
     price_per_serving = db.Column(db.Float, nullable = False)
     cheap = db.Column(db.Boolean, nullable = False)
     dish_type = db.Column(db.String(80), nullable = False)
+    instructions = db.Column(db.Text, nullable = True)
     ingredients = db.relationship('RecipeIngredients', backref='recipe', lazy=True)
     users = db.relationship('UserRecipes', backref='recipe', lazy=True)
 
