@@ -110,7 +110,7 @@
           </div>
           <img src="https://img.spoonacular.com/ingredients_100x100/{{ingredient.image}}" alt="{{ ingredient.title }}" class="w-12 h-12 rounded-full">
         </div>
-        <form action="/add_to_user_ingredients" method="POST" class="mt-4">
+        <form action="/addIngredient/{{ingredient.id}}" method="POST" class="mt-4">
           <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
           <div class="flex items-center space-x-2">
             <input 

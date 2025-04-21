@@ -141,7 +141,7 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
+  
   <header class="header">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center py-3">
@@ -180,14 +180,14 @@
     </div>
   </header>
   
-  <!-- Main Content -->
+  
   <main class="container mx-auto px-4 py-6">
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-gray-900 mb-2">Dashboard</h1>
       <p class="text-gray-600">Welcome to ByteMe Ingredients & Recipes! Manage your pantry and find recipes.</p>
     </div>
 
-    <!-- Stats Section -->
+    
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
       <div class="card stats-card">
         <div class="stats-icon">
@@ -212,18 +212,24 @@
       </div>
     </div>
 
-    <!-- Recent Items Section -->
+   
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Recent Ingredients -->
+      
       <div>
-        <h2 class="text-lg font-medium text-gray-900 mb-3">Recent Ingredients</h2>
+        <h2 class="text-lg font-medium text-gray-900 mb-3">User Ingredients</h2>
         <div class="card">
           <div class="p-4 text-gray-500" style="max-height: 200px; overflow-y: auto;">
             {% if user_ingredients %}
               {% for ingredient in user_ingredients %}
-                <div class="recent-item">
-                  <span class="material-icons mr-2">kitchen</span>
-                  <p>{{ ingredient.title }}</p>
+                <div class="recent-item flex justify-between items-center">
+                  <div class="flex items-center">
+                    <span class="material-icons mr-2">kitchen</span>
+                    <p>{{ ingredient.title }} ({{ ingredient.amount }})</p>
+                  </div>
+                  <form action="/delete_ingredient" method="POST">
+                    <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
+                    <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
+                  </form>
                 </div>
               {% endfor %}
             {% else %}
@@ -233,16 +239,22 @@
         </div>
       </div>
 
-      <!-- Recent Recipes -->
+      
       <div>
-        <h2 class="text-lg font-medium text-gray-900 mb-3">Recent Recipes</h2>
+        <h2 class="text-lg font-medium text-gray-900 mb-3">User Recipes</h2>
         <div class="card">
           <div class="p-4 text-gray-500" style="max-height: 200px; overflow-y: auto;">
             {% if user_recipes %}
               {% for recipe in user_recipes %}
-                <div class="recent-item">
-                  <span class="material-icons mr-2">menu_book</span>
-                  <p>{{ recipe.title }}</p>
+                <div class="recent-item flex justify-between items-center">
+                  <div class="flex items-center">
+                    <span class="material-icons mr-2">menu_book</span>
+                    <p>{{ recipe.title }}</p>
+                  </div>
+                  <form action="/delete_recipe" method="POST">
+                    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                    <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
+                  </form>
                 </div>
               {% endfor %}
             {% else %}
@@ -254,7 +266,7 @@
     </div>
   </main>
   
-  <!-- Footer -->
+  
   <footer class="footer">
     <div class="container mx-auto">
       <p>© 2025 ByteMe Ingredients & Recipes</p>
