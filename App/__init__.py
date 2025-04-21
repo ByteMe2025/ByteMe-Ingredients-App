@@ -18,7 +18,7 @@ def display_recipe_ingredients(recipeID):
     return owned_ings, missing_ings
 
 
-def show_recipe_instructions(recipeID):
+""" def show_recipe_instructions(recipeID):
     recipe = Recipe.query.get(recipeID)
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
@@ -51,8 +51,8 @@ def show_recipe_instructions(recipeID):
 @index_views.route('/updatedHome/<id>', methods=['GET'])
 @jwt_required()
 def updatedHome_page(id):
-    return show_recipe_instructions(id)
-    
+    return show_recipe_instructions(id) """
+
 
 @index_views.route('/signup', methods=['POST'])
 def register_user():
@@ -153,7 +153,7 @@ def remove_fav_recipe(id):
         return redirect(url_for('index_views.home_page'))
 
 
-
+""" 
 
 @index_views.route('/api_call', methods=['GET'])
 def api_call():
@@ -163,4 +163,4 @@ def api_call():
         data = response.json()
         return jsonify(data)
     except IntegrityError:
-        return jsonify('message: Failed to fetch recipes'), 500
+        return jsonify('message: Failed to fetch recipes'), 500 """

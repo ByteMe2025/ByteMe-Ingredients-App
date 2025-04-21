@@ -36,7 +36,7 @@ def api_call():
 
             for instruction in recipe.get('analyzedInstructions', []):
                 for step in instruction.get('steps', []):
-                    instructions += step['number'] + '. ' + step['step'] + '\n'
+                    instructions += str(step['number']) + '. ' + step['step'] + '\n'
 
                     for ingredient in step.get('ingredients', []):
                         if not Ingredient.query.filter_by(name=ingredient['name']).first():
