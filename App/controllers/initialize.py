@@ -15,7 +15,7 @@ def api_call():
     # backup API key: dcd0266fa29a472f9bc5245206a24923
     # backup API key: 1ce7256217df44ba94585d99e4853796
     url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=1ce7256217df44ba94585d99e4853796&number=2&instructionsRequired=true&addRecipeInformation=true'
-    instructions = ""
+    instructions = ''
     try:
         response = requests.get(url)
         data = response.json()
@@ -30,7 +30,7 @@ def api_call():
                 price_per_serving=recipe['pricePerServing'],
                 cheap =recipe['cheap'],
                 dish_type = recipe['dishTypes'][0],
-                instructions = ""
+                instructions = instructions
             )
             db.session.add(rec)
 
