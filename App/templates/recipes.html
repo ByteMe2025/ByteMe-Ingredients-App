@@ -120,11 +120,11 @@
           <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="w-12 h-12 rounded-full">
         </div>
         <div class="mt-4">
-          <button class="btn" onclick="toggleDetails('details-{{ recipe.id }}')">View Recipe</button>
+          <button class="btn" onclick="toggleDetails('details-{{ recipe.id }}')">View Recipe Instructions</button>
         </div>
         <div id="details-{{ recipe.id }}" class="hidden mt-4">
           <p class="text-gray-700">{{ recipe.instructions }}</p>
-          <form action="/addRecipe/{{recipe.id}}" method="POST" class="mt-4">
+          <form action="/addFavrecipe/{{recipe.id}}" method="POST" class="mt-4">
             <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
             <button type="submit" class="btn">Add to My Recipes</button>
           </form>
