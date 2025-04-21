@@ -298,7 +298,15 @@
       document.querySelectorAll('.recipe-modal-content').forEach(modal => modal.classList.add('hidden'));
 
       // Show the specific modal for the selected recipe
-      document.getElementById(`recipe-modal-${recipeId}`).classList.remove('hidden');
+      //document.getElementById(`recipe-modal-${recipeId}`).classList.remove('hidden');
+
+      // Get the specific recipe content
+      const recipeContent = document.getElementById(`recipe-modal-${recipeId}`);
+  
+      // If found, inject it into the modal content container
+      if (recipeContent) {
+        document.getElementById('recipe-content').innerHTML = recipeContent.innerHTML;
+      }
       document.getElementById('recipe-modal').classList.remove('hidden');
     }
 

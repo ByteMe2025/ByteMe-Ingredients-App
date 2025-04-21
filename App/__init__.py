@@ -122,11 +122,11 @@ def add_fav_recipe(id):
     user_recipe = UserRecipes.query.filter_by(recipe_id=id).first()
     if user_recipe: 
         flash('Recipe already favorited')
-        return redirect(url_for('index_views.home_page'))
+        return redirect(url_for('auth_views.show_recipes'))
     else: 
         recipe.add_fav_recipe_to_user(current_user.id)
         flash('Recipe added to user')
-        return redirect(url_for('index_views.home_page'))
+        return redirect(url_for('auth_views.show_recipes'))
 
 @auth_views.route('/removeIngredient/<id>', methods=['POST'])
 @jwt_required()
