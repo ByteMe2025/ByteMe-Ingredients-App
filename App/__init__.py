@@ -73,6 +73,7 @@ def register_page():
 def home_page():
     user_recipes = UserRecipes.query.all()
     recipes = Recipe.query.all()
+    user_ingredient = UserIngredients.query.all()
 
     ings_per_rec = {}
     for user_recipe in user_recipes:
@@ -82,7 +83,7 @@ def home_page():
             'missing': missing
         }
 
-    return render_template('index.html', recipes=recipes, user_recipes=user_recipes, current_user=current_user, expanded=False, ings_per_rec=ings_per_rec)
+    return render_template('dashboard.html', user_ingredients=user_ingredients,recipes=recipes, user_recipes=user_recipes, current_user=current_user, expanded=False, ings_per_rec=ings_per_rec)
 
 @auth_views.route('/addIngredient/<id>', methods=['POST'])
 @jwt_required()
