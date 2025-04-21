@@ -155,12 +155,12 @@ def remove_fav_recipe(id):
 
 
 
-""" @index_views.route('/api_call', methods=['GET'])
+@index_views.route('/api_call', methods=['GET'])
 def api_call():
-    url = 'https://api.spoonacular.com/recipes/324694/analyzedInstructions?apiKey=dcd0266fa29a472f9bc5245206a24923'
+    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=dcd0266fa29a472f9bc5245206a24923&number=1&instructionsRequired=true&addRecipeInformation=true&addRecipeInstructions=true'
     try:
         response = requests.get(url)
         data = response.json()
         return jsonify(data)
     except IntegrityError:
-        return jsonify('message: Failed to fetch recipes'), 500 """
+        return jsonify('message: Failed to fetch recipes'), 500
