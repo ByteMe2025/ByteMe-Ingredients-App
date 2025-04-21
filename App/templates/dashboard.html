@@ -254,7 +254,7 @@
                   </div>
                   <div id="recipe-modal-{{ recipe.id }}" class="recipe-modal-content hidden">
                     <h2 class="text-xl font-bold">{{ recipe.title }}</h2>
-                    <p class="mt-4 text-gray-700 whitespace-pre-line"><strong>Instructions:</strong> {{ recipe.recipe.instructions }}</p>
+                    <p class="mt-4 text-gray-700 whitespace-pre-line"><strong>Instructions:</strong><br> {{ recipe.recipe.instructions }}</p>
                     <p class="mt-4"><strong>Ingredients:</strong></p>
                     <ul class="list-disc pl-5">
                       {% for ing in ings_per_rec[recipe.recipe_id]['owned'] %}
