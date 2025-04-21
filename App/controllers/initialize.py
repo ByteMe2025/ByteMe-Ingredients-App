@@ -15,7 +15,7 @@ def api_call():
     # backup API key: dcd0266fa29a472f9bc5245206a24923
     # backup API key: 1ce7256217df44ba94585d99e4853796
     # backup API key: 4e3b2fc12a714940b03ae344ab792f2d
-    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=aac4c24f91984b01b2fcfd52970128a5&number=20&instructionsRequired=true&addRecipeInformation=true'
+    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=aac4c24f91984b01b2fcfd52970128a5&number=10&instructionsRequired=true&addRecipeInformation=true'
     instructions = ''
     try:
         response = requests.get(url)
