@@ -30,7 +30,7 @@ class Recipe (db.Model):
     ingredients = db.relationship('RecipeIngredients', backref='recipe', lazy=True)
     users = db.relationship('UserRecipes', backref='recipe', lazy=True)
 
-    def __init__(self, id, title, image, servings, ready_in_mins, health_score, price_per_serving, cheap, dish_type):
+    def __init__(self, id, title, image, servings, ready_in_mins, health_score, price_per_serving, cheap, dish_type, instructions):
         self.id = id
         self.title = title
         self.image = image
@@ -40,6 +40,7 @@ class Recipe (db.Model):
         self.price_per_serving = price_per_serving
         self.cheap = cheap
         self.dish_type = dish_type
+        self.instructions = instructions
 
       
     def add_fav_recipe_to_user(self, user_id):
