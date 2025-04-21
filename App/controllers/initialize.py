@@ -17,21 +17,21 @@ def api_call():
         response = requests.get(url)
         data = response.json()
         for recipe in data['results']:
-            rec = Recipe(
-                id = recipe['id'],
-                title=recipe['title'],
-                image=recipe['image'],
-                ready_in_mins=recipe['readyInMinutes'],
-                servings=recipe['servings'],
-                health_score=recipe['healthScore'],
-                price_per_serving=recipe['pricePerServing'],
-                cheap =recipe['cheap'],
-                dish_type = recipe['dishTypes'][0]
-            )
-            db.session.add(rec)
-
             for instruction in recipe.get('analyzedInstructions', []):
                 for step in instruction.get('steps', []):
+                    rec = Recipe(
+                        id = recipe['id'],
+                        title=recipe['title'],
+                        image=recipe['image'],
+                        ready_in_mins=recipe['readyInMinutes'],
+                        servings=recipe['servings'],
+                        health_score=recipe['healthScore'],
+                        price_per_serving=recipe['pricePerServing'],
+                        cheap =recipe['cheap'],
+                        dish_type = recipe['dishTypes'][0]
+                        )
+                    db.session.add(rec)
+                    
                     for ingredient in step.get('ingredients', []):
                         if not Ingredient.query.filter_by(name=ingredient['name']).first():
                             ing = Ingredient(
