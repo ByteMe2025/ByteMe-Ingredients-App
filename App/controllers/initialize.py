@@ -12,7 +12,7 @@ def initialize():
     api_call()
 
 def api_call():
-    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=dcd0266fa29a472f9bc5245206a24923&number=1&instructionsRequired=true&addRecipeInformation=true'
+    url = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=dcd0266fa29a472f9bc5245206a24923&number=2&instructionsRequired=true&addRecipeInformation=true'
     try:
         response = requests.get(url)
         data = response.json()
