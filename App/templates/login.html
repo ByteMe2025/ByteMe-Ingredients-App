@@ -182,7 +182,7 @@
             </label>
           </div>
           
-          <button type="submit" class="btn">
+          <button type="submit" class="btn" href="/login">
             Log In
           </button>
         </form>
@@ -201,75 +201,6 @@
       <p>© 2025 ByteMe Ingredients & Recipes</p>
     </div>
   </footer>
-
-  <script>
-    // Handle login form submission
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const errorMessage = document.getElementById('error-message');
-      
-      // check if credentials match the demo ones
-      if (username === 'bob' && password === 'bobpass') {
-        // Store user data in localStorage
-        const user = {
-          id: 1,
-          username: 'bob',
-          email: 'bob@example.com',
-          token: 'demo-token'
-        };
-        
-        localStorage.setItem('byteme_user', JSON.stringify(user));
-
-        // Add updateProfile function
-        window.updateProfile = async function(data) {
-          try {
-            const response = await fetch('/api/profile', {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
-              },
-              body: JSON.stringify(data)
-            });
-
-            if (!response.ok) {
-              throw new Error('Failed to update profile');
-            }
-
-            const updatedUser = await response.json();
-            localStorage.setItem('byteme_user', JSON.stringify(updatedUser));
-            return updatedUser;
-          } catch (error) {
-            console.error('Error updating profile:', error);
-            throw error;
-          }
-        };
-        
-        // Redirect to dashboard
-        window.location.href = 'dashboard.html';
-      } else {
-        // Show error message
-        errorMessage.style.display = 'block';
-      }
-    });
-    
-    // Check if user is already logged in
-    document.addEventListener('DOMContentLoaded', function() {
-      const savedUser = localStorage.getItem('byteme_user');
-      if (savedUser) {
-        try {
-          JSON.parse(savedUser); // Make sure it's valid JSON
-          window.location.href = 'dashboard.html';
-        } catch (e) {
-          // Invalid JSON, remove it
-          localStorage.removeItem('byteme_user');
-        }
-      }
-    });
-  </script>
 </body>
 </html>
 

@@ -104,9 +104,16 @@ def add_ingredient(id):
 @auth_views.route('/ingredients', methods=['GET'])
 @jwt_required()
 def show_ingredients():
-    user_ingredients = UserIngredients.query.all()
+    #user_ingredients = UserIngredients.query.all()
     ingredients = Ingredient.query.all()
-    return render_template('ingredients.html', ingredients=ingredients, user_ingredients=user_ingredients)
+    return render_template('ingredients.html', ingredients=ingredients)
+
+@auth_views.route('/recipes', methods=['POST'])
+@jwt_required()
+def show_recipes():
+    recipes = Recipe.query.all()
+    return render_template('recipes.html', recipes=recipes)
+
 
 @auth_views.route('/addFavrecipe/<id>', methods=['POST'])
 @jwt_required()
@@ -144,6 +151,9 @@ def remove_fav_recipe(id):
         user_recipe.remove_fav_recipe_from_user(current_user.id)
         flash('Recipe removed from user')
         return redirect(url_for('index_views.home_page'))
+
+
+
 
 """ @index_views.route('/api_call', methods=['GET'])
 def api_call():
