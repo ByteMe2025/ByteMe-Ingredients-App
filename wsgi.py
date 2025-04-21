@@ -1,4 +1,4 @@
-import click, pytest, sys
+import click, pytest, sys # type: ignore
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
 
