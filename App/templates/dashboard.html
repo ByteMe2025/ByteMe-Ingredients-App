@@ -240,6 +240,7 @@
       </div>
 
       
+      <!-- User Recipes -->
       <div>
         <h2 class="text-lg font-medium text-gray-900 mb-3">User Recipes</h2>
         <div class="card">
@@ -249,9 +250,9 @@
                 <div class="recent-item flex justify-between items-center">
                   <div class="flex items-center">
                     <span class="material-icons mr-2">menu_book</span>
-                    <p>{{ recipe.title }}</p>
+                    <p class="cursor-pointer text-primary hover:underline" onclick="openRecipeModal('{{ recipe.id }}')">{{ recipe.title }}</p>
                   </div>
-                  <form action="/removeFavrecipe/{{recipe.id}}" method="POST">
+                  <form action="/removeFavrecipe/{{ recipe.id }}" method="POST">
                     <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
                     <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
                   </form>
@@ -272,5 +273,59 @@
       <p>© 2025 ByteMe Ingredients & Recipes</p>
     </div>
   </footer>
+
+  <!-- Recipe Modal -->
+  <div id="recipe-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 id="recipe-title" class="text-xl font-bold text-gray-900"></h2>
+        <button onclick="closeRecipeModal()" class="text-gray-500 hover:text-gray-700">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div id="recipe-content" class="text-gray-700">
+        <!-- Recipe details will be dynamically loaded here -->
+      </div>
+      <div class="mt-4 text-right">
+        <button onclick="closeRecipeModal()" class="btn bg-gray-200 hover:bg-gray-300 text-gray-700">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openRecipeModal(recipeId) {
+      // Hide all modals first
+      document.querySelectorAll('.recipe-modal-content').forEach(modal => modal.classList.add('hidden'));
+
+      // Show the specific modal for the selected recipe
+      document.getElementById(`recipe-modal-${recipeId}`).classList.remove('hidden');
+      document.getElementById('recipe-modal').classList.remove('hidden');
+    }
+
+    function closeRecipeModal() {
+      document.getElementById('recipe-modal').classList.add('hidden');
+    }
+  </script>
+
+  <!-- Pre-rendered Modals for Each Recipe -->
+  {% for recipe in user_recipes %}
+  <div id="recipe-modal-{{ recipe.id }}" class="recipe-modal-content hidden">
+    <h2 class="text-xl font-bold">{{ recipe.title }}</h2>
+    <p class="mt-4"><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+    <p class="mt-4"><strong>Ingredients:</strong></p>
+    <ul class="list-disc pl-5">
+      {% for ingredient in recipe.ingredients %}
+        <li>
+          {{ ingredient.title }} - 
+          {% if ingredient.available %}
+            <span class="text-green-500">Available</span>
+          {% else %}
+            <span class="text-red-500">Missing</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
 </body>
 </html>
