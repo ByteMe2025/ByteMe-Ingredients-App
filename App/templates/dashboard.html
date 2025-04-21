@@ -226,7 +226,7 @@
                     <span class="material-icons mr-2">kitchen</span>
                     <p>{{ ingredient.title }} ({{ ingredient.amount }})</p>
                   </div>
-                  <form action="/delete_ingredient" method="POST">
+                  <form action="/removeIngredient/{{ingredient.id}}" method="POST">
                     <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
                     <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
                   </form>
@@ -251,7 +251,7 @@
                     <span class="material-icons mr-2">menu_book</span>
                     <p>{{ recipe.title }}</p>
                   </div>
-                  <form action="/delete_recipe" method="POST">
+                  <form action="/removeFavrecipe/{{recipe.id}}" method="POST">
                     <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
                     <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
                   </form>
